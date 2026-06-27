@@ -13,13 +13,19 @@
 
     "forceConsistentCasingInFileNames": true,
 
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
 
     "resolveJsonModule": true,
 
     "types": ["node"],
 
-    "sourceMap": true
+    "sourceMap": true,
+
+    "baseUrl": "./src",
+
+    "paths": {
+      "@/*": ["*"]
+    }
   },
 
   "include": ["src"],

@@ -6,7 +6,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import { errorHandler } from "./middlewares/error.middleware";
 import { notFoundHandler } from "./middlewares/notFound.middleware";
-
+import routes from "./routes";
 
 const app = express();
 
@@ -22,15 +22,18 @@ app.use(cookieParser());
 
 app.use(morgan("dev"));
 
-app.use(notFoundHandler);
-
-app.use(errorHandler);
+app.use("/api", routes);
 
 app.get("/api/v1/health", (_req, res) => {
   res.status(200).json({
     success: true,
-    message: "CampusFlow API is running"
+    message: "CampusFlow API is running",
   });
 });
 
+app.use(notFoundHandler);
+
+app.use(errorHandler);
+
 export default app;
+

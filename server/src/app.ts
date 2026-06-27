@@ -4,6 +4,9 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import { errorHandler } from "./middlewares/error.middleware";
+import { notFoundHandler } from "./middlewares/notFound.middleware";
+
 
 const app = express();
 
@@ -18,6 +21,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(morgan("dev"));
+
+app.use(notFoundHandler);
+
+app.use(errorHandler);
 
 app.get("/api/v1/health", (_req, res) => {
   res.status(200).json({

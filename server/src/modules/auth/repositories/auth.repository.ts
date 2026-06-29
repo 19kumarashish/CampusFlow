@@ -2,7 +2,13 @@ import { User } from "@/modules/users/models/user.model";
 
 class AuthRepository {
   async findByEmail(email: string) {
-    return User.findOne({ email }).select("+password").populate("role");
+    return User.findOne({ email })
+      .select("+password")
+      .populate("role");
+  }
+
+  async findById(id: string) {
+    return User.findById(id).populate("role");
   }
 
   async updateLastLogin(userId: string) {

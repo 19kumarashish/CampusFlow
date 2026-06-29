@@ -1,13 +1,13 @@
 import { Router } from "express";
 
-import {
-  login,
-  logout,
-  refreshToken,
-  getMe,
-} from "../controllers/auth.controller";
-
 import { protect } from "@/middlewares/auth.middleware";
+
+import {
+    getMe,
+    login,
+    logout,
+    refreshToken,
+} from "../controllers/auth.controller";
 
 const router = Router();
 

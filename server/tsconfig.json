@@ -4,31 +4,30 @@
     "module": "CommonJS",
     "rootDir": "./src",
     "outDir": "./dist",
-
     "strict": true,
-
     "esModuleInterop": true,
-
     "skipLibCheck": true,
-
     "forceConsistentCasingInFileNames": true,
-
     "moduleResolution": "Node",
-
+    "ignoreDeprecations": "5.0",
+    "moduleDetection": "force",
     "resolveJsonModule": true,
-
-    "types": ["node"],
-
+    "types": [
+      "node"
+    ],
     "sourceMap": true,
-
     "baseUrl": "./src",
-
     "paths": {
-      "@/*": ["*"]
+      "@/*": [
+        "*"
+      ]
     }
   },
-
-  "include": ["src"],
-
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

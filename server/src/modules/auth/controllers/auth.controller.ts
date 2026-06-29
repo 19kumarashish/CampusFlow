@@ -51,8 +51,8 @@ export const refreshToken = asyncHandler(
 );
 
 export const logout = asyncHandler(
-  async (_req: Request, res: Response) => {
-    await authService.logout();
+  async (req: Request, res: Response) => {
+    await authService.logout(req.cookies?.refreshToken);
 
     res.clearCookie("refreshToken", {
       httpOnly: true,
@@ -72,8 +72,12 @@ export const logout = asyncHandler(
 
 export const getMe = asyncHandler(
   async (req: AuthRequest, res: Response) => {
+    if (!req.user?._id) {
+      throw new ApiError(401, "Unauthorized");
+    }
+
     const user = await authService.getCurrentUser(
-      req.user._id,
+      req.user._id.toString(),
     );
 
     res.status(200).json(

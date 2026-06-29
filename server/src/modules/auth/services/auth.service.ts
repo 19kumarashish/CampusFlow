@@ -3,26 +3,24 @@ import { comparePassword } from "@/shared/security/bcrypt";
 import {
   generateAccessToken,
   generateRefreshToken,
-  verifyRefreshToken,
 } from "@/shared/security/jwt";
-
-import { JwtPayload } from "jsonwebtoken";
 
 import { authRepository } from "../repositories/auth.repository";
 import { LoginInput } from "../validators/auth.validator";
 
 export class AuthService {
+  // Login
   async login(data: LoginInput) {
     const { email, password } = data;
 
-    // 1. Find user
+    // Find user
     const user = await authRepository.findByEmail(email);
 
     if (!user) {
       throw new ApiError(401, "Invalid credentials");
     }
 
-    // 2. Compare password
+    // Compare password
     const isPasswordValid = await comparePassword(
       password,
       user.password,
@@ -32,12 +30,15 @@ export class AuthService {
       throw new ApiError(401, "Invalid credentials");
     }
 
-    // 3. Check account status
+    // Check account status
     if (user.status !== "ACTIVE") {
-      throw new ApiError(403, "Account is not active");
+      throw new ApiError(
+        403,
+        "Account is not active",
+      );
     }
 
-    // 4. Generate Tokens
+    // Generate tokens
     const accessToken = generateAccessToken({
       userId: user._id.toString(),
       roleId: user.role._id.toString(),
@@ -50,12 +51,12 @@ export class AuthService {
       email: user.email,
     });
 
-    // 5. Update last login
+    // Update last login
     await authRepository.updateLastLogin(
       user._id.toString(),
     );
 
-    // 6. Return response
+    // Return response
     return {
       user,
       accessToken,
@@ -63,42 +64,15 @@ export class AuthService {
     };
   }
 
-  async refreshToken(refreshToken: string) {
-    if (!refreshToken) {
-      throw new ApiError(
-        401,
-        "Refresh token is required",
-      );
-    }
-
-    const payload = verifyRefreshToken(
-      refreshToken,
-    ) as JwtPayload;
-
-    const user = await authRepository.findById(
-      payload.userId,
-    );
+  // Get current user
+  async getCurrentUser(userId: string) {
+    const user = await authRepository.findById(userId);
 
     if (!user) {
-      throw new ApiError(401, "User not found");
+      throw new ApiError(404, "User not found");
     }
 
-    if (user.status !== "ACTIVE") {
-      throw new ApiError(
-        403,
-        "Account is not active",
-      );
-    }
-
-    const accessToken = generateAccessToken({
-      userId: user._id.toString(),
-      roleId: user.role._id.toString(),
-      email: user.email,
-    });
-
-    return {
-      accessToken,
-    };
+    return user;
   }
 }
 

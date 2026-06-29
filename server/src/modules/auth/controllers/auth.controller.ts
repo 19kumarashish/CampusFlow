@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 
+import { AuthRequest } from "@/types/auth-request";
 import { ApiError } from "@/utils/ApiError";
 import { ApiResponse } from "@/utils/ApiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";
@@ -31,7 +32,7 @@ export const login = asyncHandler(
 
 export const refreshToken = asyncHandler(
   async (req: Request, res: Response) => {
-    const token = req.cookies.refreshToken;
+    const token = req.cookies?.refreshToken;
 
     if (!token) {
       throw new ApiError(401, "Refresh token is required");
@@ -44,6 +45,42 @@ export const refreshToken = asyncHandler(
         true,
         "Access token refreshed",
         result,
+      ),
+    );
+  },
+);
+
+export const logout = asyncHandler(
+  async (_req: Request, res: Response) => {
+    await authService.logout();
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+
+    res.status(200).json(
+      new ApiResponse(
+        true,
+        "Logout successful",
+        null,
+      ),
+    );
+  },
+);
+
+export const getMe = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const user = await authService.getCurrentUser(
+      req.user._id,
+    );
+
+    res.status(200).json(
+      new ApiResponse(
+        true,
+        "User fetched successfully",
+        user,
       ),
     );
   },

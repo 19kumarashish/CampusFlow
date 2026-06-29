@@ -22,6 +22,23 @@ class AuthRepository {
       },
     );
   }
+
+  async saveResetToken(
+    userId: string,
+    token: string,
+    expires: Date,
+  ) {
+    return User.findByIdAndUpdate(
+      userId,
+      {
+        passwordResetToken: token,
+        passwordResetExpires: expires,
+      },
+      {
+        new: true,
+      },
+    );
+  }
 }
 
 export const authRepository = new AuthRepository();

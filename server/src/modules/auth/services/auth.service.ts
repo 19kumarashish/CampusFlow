@@ -1,26 +1,36 @@
-import { ApiError } from "@/utils/ApiError";
+import { IUser } from "@/modules/users/models/user.interface";
 import { comparePassword } from "@/shared/security/bcrypt";
 import {
   generateAccessToken,
   generateRefreshToken,
+  verifyRefreshToken,
 } from "@/shared/security/jwt";
+import { ApiError } from "@/utils/ApiError";
 
 import { authRepository } from "../repositories/auth.repository";
 import { LoginInput } from "../validators/auth.validator";
 
+export interface AuthLoginResult {
+  user: IUser;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface AuthRefreshResult {
+  accessToken: string;
+  user: IUser;
+}
+
 export class AuthService {
-  // Login
-  async login(data: LoginInput) {
+  async login(data: LoginInput): Promise<AuthLoginResult> {
     const { email, password } = data;
 
-    // Find user
     const user = await authRepository.findByEmail(email);
 
     if (!user) {
       throw new ApiError(401, "Invalid credentials");
     }
 
-    // Compare password
     const isPasswordValid = await comparePassword(
       password,
       user.password,
@@ -30,33 +40,26 @@ export class AuthService {
       throw new ApiError(401, "Invalid credentials");
     }
 
-    // Check account status
     if (user.status !== "ACTIVE") {
-      throw new ApiError(
-        403,
-        "Account is not active",
-      );
+      throw new ApiError(403, "Account is not active");
     }
 
-    // Generate tokens
+    const roleId = user.role.toString();
+
     const accessToken = generateAccessToken({
       userId: user._id.toString(),
-      roleId: user.role._id.toString(),
+      roleId,
       email: user.email,
     });
 
     const refreshToken = generateRefreshToken({
       userId: user._id.toString(),
-      roleId: user.role._id.toString(),
+      roleId,
       email: user.email,
     });
 
-    // Update last login
-    await authRepository.updateLastLogin(
-      user._id.toString(),
-    );
+    await authRepository.updateLastLogin(user._id.toString());
 
-    // Return response
     return {
       user,
       accessToken,
@@ -64,8 +67,43 @@ export class AuthService {
     };
   }
 
-  // Get current user
-  async getCurrentUser(userId: string) {
+  async refreshToken(token: string): Promise<AuthRefreshResult> {
+    try {
+      const payload = verifyRefreshToken(token);
+      const user = await authRepository.findById(payload.userId);
+
+      if (!user) {
+        throw new ApiError(401, "Invalid refresh token");
+      }
+
+      if (user.status !== "ACTIVE") {
+        throw new ApiError(403, "Account is not active");
+      }
+
+      const accessToken = generateAccessToken({
+        userId: user._id.toString(),
+        roleId: user.role.toString(),
+        email: user.email,
+      });
+
+      return {
+        accessToken,
+        user,
+      };
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      }
+
+      throw new ApiError(401, "Invalid or expired refresh token");
+    }
+  }
+
+  async logout(_token?: string): Promise<void> {
+    return undefined;
+  }
+
+  async getCurrentUser(userId: string): Promise<IUser> {
     const user = await authRepository.findById(userId);
 
     if (!user) {

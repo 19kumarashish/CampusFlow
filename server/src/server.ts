@@ -4,17 +4,20 @@ import { env } from "./config/env";
 import { seedRoles } from "./config/seed";
 import { logger } from "./utils/logger";
 
-const startServer = async () => {
-  // Connect to MongoDB
-  await connectDatabase();
+const startServer = async (): Promise<void> => {
+  try {
+    await connectDatabase();
+    await seedRoles();
 
-  // Seed default roles
-  await seedRoles();
-
-  // Start the server
-  app.listen(env.PORT, () => {
-    logger.info(`🚀 Server running on port ${env.PORT}`);
-  });
+    app.listen(env.PORT, () => {
+      logger.info(`🚀 Server running on port ${env.PORT}`);
+    });
+  } catch (error) {
+    logger.error(
+      `Failed to start server: ${error instanceof Error ? error.message : String(error)}`,
+    );
+    process.exit(1);
+  }
 };
 
-startServer();
+void startServer();

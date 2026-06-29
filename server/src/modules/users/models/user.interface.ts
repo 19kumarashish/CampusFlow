@@ -1,8 +1,11 @@
 import { Document, Types } from "mongoose";
 
+import { IRole } from "@/modules/roles/models/role.interface";
 import { UserStatus } from "@/shared/enums/user-status.enum";
 
 export interface IUser extends Document {
+  _id: Types.ObjectId;
+
   firstName: string;
 
   lastName: string;
@@ -15,7 +18,7 @@ export interface IUser extends Document {
 
   avatar?: string;
 
-  role: Types.ObjectId;
+  role: Types.ObjectId | IRole;
 
   status: UserStatus;
 

@@ -14,6 +14,8 @@ export default [
   {
     files: ["**/*.{ts,tsx}"],
 
+    ignores: ["dist/**"],
+
     languageOptions: {
       globals: globals.node,
     },

@@ -1,0 +1,13 @@
+import axios from "axios";
+import { env } from "@/config/env";
+
+export const api = axios.create({
+  baseURL: env.API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  withCredentials: true,
+});
+
+// Import interceptors to set them up
+import "./interceptors";

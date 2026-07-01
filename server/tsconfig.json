@@ -8,8 +8,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Node",
-    "ignoreDeprecations": "5.0",
+    "moduleResolution": "node16",
+    "ignoreDeprecations": "6.0",
     "moduleDetection": "force",
     "resolveJsonModule": true,
     "types": [
@@ -24,7 +24,9 @@
     }
   },
   "include": [
-    "src"
+    "src",
+    "database",
+    "tests"
   ],
   "exclude": [
     "node_modules",

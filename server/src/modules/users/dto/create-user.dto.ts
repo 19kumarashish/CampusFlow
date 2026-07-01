@@ -6,5 +6,5 @@ export interface CreateUserDto {
   email: string;
   phone: string;
   password: string;
-  role: Types.ObjectId;
+  roleId: string;
 }

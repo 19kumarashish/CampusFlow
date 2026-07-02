@@ -2,6 +2,8 @@ const { expect } = require("chai");
 
 const { ApiError } = require("../src/utils/ApiError");
 const { UserService } = require("../src/modules/users/services/user.service");
+const { userRepository } = require("../src/modules/users/repositories/user.repository");
+const { User } = require("../src/modules/users/models/user.model");
 
 const baseUserData = {
     firstName: "Test",
@@ -93,6 +95,18 @@ describe("UserService", () => {
         } catch (error) {
             expect(error).to.be.instanceOf(ApiError);
             expect(error.message).to.equal("Role not found");
+        }
+    });
+
+    it("finds a user by phone through the repository", async () => {
+        const originalFindOne = User.findOne;
+        User.findOne = async () => ({ _id: "user-2", phone: baseUserData.phone });
+
+        try {
+            const result = await userRepository.findByPhone(baseUserData.phone);
+            expect(result).to.deep.include({ phone: baseUserData.phone });
+        } finally {
+            User.findOne = originalFindOne;
         }
     });
 });

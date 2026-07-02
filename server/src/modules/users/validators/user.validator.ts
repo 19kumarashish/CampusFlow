@@ -13,7 +13,11 @@ export const createUserSchema = z.object({
     .min(2)
     .max(50),
 
-  email: z.string().trim().email(),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email(),
 
   phone: z
     .string()
@@ -21,9 +25,14 @@ export const createUserSchema = z.object({
     .min(10)
     .max(15),
 
-  password: z.string().min(8),
+  password: z
+    .string()
+    .min(8),
 
-  roleId: z.string().trim().min(1),
+  roleId: z
+    .string()
+    .trim()
+    .min(1),
 });
 
 export const updateUserSchema = z.object({
@@ -41,6 +50,13 @@ export const updateUserSchema = z.object({
     .max(50)
     .optional(),
 
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email()
+    .optional(),
+
   phone: z
     .string()
     .trim()
@@ -48,9 +64,21 @@ export const updateUserSchema = z.object({
     .max(15)
     .optional(),
 
+  password: z
+    .string()
+    .min(8)
+    .max(32)
+    .optional(),
+
   avatar: z
     .string()
     .url()
+    .optional(),
+
+  roleId: z
+    .string()
+    .trim()
+    .min(1)
     .optional(),
 
   status: z
@@ -58,8 +86,21 @@ export const updateUserSchema = z.object({
       "ACTIVE",
       "INACTIVE",
       "SUSPENDED",
+      "PENDING",
     ])
     .optional(),
+});
+
+export const changePasswordSchema = z.object({
+  currentPassword: z
+    .string()
+    .min(8)
+    .max(32),
+
+  newPassword: z
+    .string()
+    .min(8)
+    .max(32),
 });
 
 export const getUsersQuerySchema = z.object({
@@ -67,7 +108,10 @@ export const getUsersQuerySchema = z.object({
 
   limit: z.coerce.number().min(1).max(100).default(10),
 
-  search: z.string().trim().optional(),
+  search: z
+    .string()
+    .trim()
+    .optional(),
 
   status: z
     .enum([
@@ -80,12 +124,19 @@ export const getUsersQuerySchema = z.object({
 
   role: z.string().optional(),
 
-  sort: z.string().default("-createdAt"),
+  sort: z
+    .string()
+    .default("-createdAt"),
 });
 
 export type GetUsersQueryInput =
   z.infer<typeof getUsersQuerySchema>;
-  
-export type CreateUserInput = z.infer<typeof createUserSchema>;
 
-export type UpdateUserInput = z.infer<typeof updateUserSchema>;
+export type CreateUserInput =
+  z.infer<typeof createUserSchema>;
+
+export type UpdateUserInput =
+  z.infer<typeof updateUserSchema>;
+
+export type ChangePasswordInput =
+  z.infer<typeof changePasswordSchema>;

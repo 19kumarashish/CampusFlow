@@ -11,8 +11,20 @@ class UserRepository {
     return User.findOne({ email });
   }
 
+  async findByPhone(phone: string) {
+    return User.findOne({ phone });
+  }
+
   async findById(id: string) {
-    return User.findById(id).populate("role");
+    return User.findById(id)
+      .populate("role")
+      .select("-password");
+  }
+
+  async findByIdWithPassword(id: string) {
+    return User.findById(id)
+      .select("+password")
+      .populate("role");
   }
 
   async findAll(query: GetUsersQueryInput) {
@@ -63,6 +75,7 @@ class UserRepository {
     const [users, total] = await Promise.all([
       User.find(filter)
         .populate("role")
+        .select("-password")
         .sort(sort)
         .skip(skip)
         .limit(limit),
@@ -83,17 +96,52 @@ class UserRepository {
     };
   }
 
-  async updateById(id: string, data: Partial<IUser>) {
-    return User.findByIdAndUpdate(id, data, {
-      new: true,
-    }).populate("role");
-  }
-
-  async deleteById(id: string) {
+  async updateById(
+    id: string,
+    data: Partial<IUser>,
+  ) {
     return User.findByIdAndUpdate(
       id,
       {
-        status: "INACTIVE",
+        $set: data,
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    )
+      .populate("role")
+      .select("-password");
+  }
+
+  async softDeleteById(id: string) {
+    return User.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          status: "INACTIVE",
+          deletedAt: new Date(),
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    )
+      .populate("role")
+      .select("-password");
+  }
+
+  async updatePassword(
+    id: string,
+    password: string,
+  ) {
+    return User.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          password,
+        },
       },
       {
         new: true,

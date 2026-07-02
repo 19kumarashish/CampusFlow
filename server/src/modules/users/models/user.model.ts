@@ -19,7 +19,7 @@ const userSchema = new Schema<IUser>(
     lastName: {
       type: String,
       required: true,
-      trim: true, 
+      trim: true,
     },
 
     email: {
@@ -75,6 +75,15 @@ const userSchema = new Schema<IUser>(
       type: String,
       enum: Object.values(UserStatus),
       default: UserStatus.PENDING,
+    },
+
+    // =====================
+    // Soft Delete
+    // =====================
+
+    deletedAt: {
+      type: Date,
+      default: null,
     },
   },
   {

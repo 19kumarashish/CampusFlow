@@ -91,6 +91,34 @@ export const updateUserSchema = z.object({
     .optional(),
 });
 
+export const updateProfileSchema = z.object({
+  firstName: z
+    .string()
+    .trim()
+    .min(2)
+    .max(50)
+    .optional(),
+
+  lastName: z
+    .string()
+    .trim()
+    .min(2)
+    .max(50)
+    .optional(),
+
+  phone: z
+    .string()
+    .trim()
+    .min(10)
+    .max(15)
+    .optional(),
+
+  avatar: z
+    .string()
+    .url()
+    .optional(),
+});
+
 export const changePasswordSchema = z.object({
   currentPassword: z
     .string()
@@ -137,6 +165,9 @@ export type CreateUserInput =
 
 export type UpdateUserInput =
   z.infer<typeof updateUserSchema>;
+
+export type UpdateProfileInput =
+  z.infer<typeof updateProfileSchema>;
 
 export type ChangePasswordInput =
   z.infer<typeof changePasswordSchema>;

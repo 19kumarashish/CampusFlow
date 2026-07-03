@@ -1,7 +1,7 @@
 import { Role } from "@/modules/roles/models/role.model";
 import { User } from "@/modules/users/models/user.model";
-import { hashPassword } from "@/shared/security/bcrypt";
 import { UserStatus } from "@/shared/enums/user-status.enum";
+import { hashPassword } from "@/shared/security/bcrypt";
 
 export const seedAdminUser = async () => {
     const role = await Role.findOne({ name: "ADMIN" });

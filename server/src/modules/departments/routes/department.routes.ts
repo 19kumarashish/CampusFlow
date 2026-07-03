@@ -1,18 +1,16 @@
 import { Router } from "express";
 
+import {
+  createDepartment,
+  getDepartments,
+  getDepartmentById,
+  updateDepartment,
+  deleteDepartment,
+} from "../controllers/department.controller";
+
 import { protect } from "@/middlewares/auth.middleware";
 import { authorize } from "@/middlewares/authorize.middleware";
 import { UserRole } from "@/shared/enums/user-role.enum";
-
-import {
-  changePassword,
-  createUser,
-  deleteUser,
-  getUserById,
-  getUsers,
-  updateProfile,
-  updateUser,
-} from "../controllers/user.controller";
 
 const router = Router();
 
@@ -20,49 +18,33 @@ router.post(
   "/",
   protect,
   authorize(UserRole.ADMIN),
-  createUser,
+  createDepartment,
 );
 
 router.get(
   "/",
   protect,
-  authorize(UserRole.ADMIN),
-  getUsers,
-);
-
-// Must come before "/:id"
-router.patch(
-  "/change-password",
-  protect,
-  changePassword,
-);
-
-// Must come before "/:id"
-router.patch(
-  "/profile",
-  protect,
-  updateProfile,
+  getDepartments,
 );
 
 router.get(
   "/:id",
   protect,
-  authorize(UserRole.ADMIN),
-  getUserById,
+  getDepartmentById,
 );
 
 router.patch(
   "/:id",
   protect,
   authorize(UserRole.ADMIN),
-  updateUser,
+  updateDepartment,
 );
 
 router.delete(
   "/:id",
   protect,
   authorize(UserRole.ADMIN),
-  deleteUser,
+  deleteDepartment,
 );
 
 export default router;

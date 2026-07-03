@@ -3,14 +3,18 @@ import {
   hashPassword,
   comparePassword,
 } from "@/shared/security/bcrypt";
+
 import { roleRepository as defaultRoleRepository } from "@/modules/roles/repositories/role.repository";
 import { userRepository as defaultUserRepository } from "../repositories/user.repository";
+
+import { IUser } from "../models/user.interface";
 
 import {
   CreateUserInput,
   GetUsersQueryInput,
   UpdateUserInput,
   ChangePasswordInput,
+  UpdateProfileInput,
 } from "../validators/user.validator";
 
 export class UserService {
@@ -140,10 +144,7 @@ export class UserService {
       }
     }
 
-    const updateData: Record<
-      string,
-      unknown
-    > = {
+    const updateData: Partial<IUser> = {
       ...data,
     };
 
@@ -161,7 +162,7 @@ export class UserService {
       }
 
       updateData.role = role._id;
-      delete updateData.roleId;
+      delete (updateData as any).roleId;
     }
 
     if (data.password) {
@@ -227,6 +228,16 @@ export class UserService {
       );
     }
 
+    if (
+      data.currentPassword ===
+      data.newPassword
+    ) {
+      throw new ApiError(
+        400,
+        "New password must be different from current password",
+      );
+    }
+
     const hashedPassword =
       await this.hashFn(
         data.newPassword,
@@ -241,6 +252,45 @@ export class UserService {
       message:
         "Password changed successfully",
     };
+  }
+
+  async updateProfile(
+    userId: string,
+    data: UpdateProfileInput,
+  ) {
+    const user =
+      await this.userRepository.findById(
+        userId,
+      );
+
+    if (!user) {
+      throw new ApiError(
+        404,
+        "User not found",
+      );
+    }
+
+    if (
+      data.phone &&
+      data.phone !== user.phone
+    ) {
+      const phoneExists =
+        await this.userRepository.findByPhone(
+          data.phone,
+        );
+
+      if (phoneExists) {
+        throw new ApiError(
+          409,
+          "Phone number already exists",
+        );
+      }
+    }
+
+    return this.userRepository.updateById(
+      userId,
+      data,
+    );
   }
 }
 

@@ -12,6 +12,7 @@ import {
   createUserSchema,
   getUsersQuerySchema,
   updateUserSchema,
+  updateProfileSchema,
 } from "../validators/user.validator";
 
 export const createUser = asyncHandler(
@@ -131,6 +132,27 @@ export const changePassword = asyncHandler(
         true,
         "Password changed successfully",
         result,
+      ),
+    );
+  },
+);
+
+export const updateProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    const data =
+      updateProfileSchema.parse(req.body);
+
+    const user =
+      await userService.updateProfile(
+        req.user!.userId,
+        data,
+      );
+
+    res.status(200).json(
+      new ApiResponse(
+        true,
+        "Profile updated successfully",
+        user,
       ),
     );
   },

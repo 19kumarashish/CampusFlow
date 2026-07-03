@@ -6,6 +6,7 @@ import {
   deleteUser,
   getUserById,
   getUsers,
+  updateProfile,
   updateUser,
 } from "../controllers/user.controller";
 
@@ -34,6 +35,13 @@ router.patch(
   "/change-password",
   protect,
   changePassword,
+);
+
+// Must come before "/:id"
+router.patch(
+  "/profile",
+  protect,
+  updateProfile,
 );
 
 router.get(

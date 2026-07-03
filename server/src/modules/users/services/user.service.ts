@@ -150,7 +150,7 @@ export class UserService {
     if (data.email) updateData.email = data.email;
     if (data.phone) updateData.phone = data.phone;
     if (data.avatar) updateData.avatar = data.avatar;
-    if (data.status) updateData.status = data.status as unknown as UserStatus;
+    if (data.status) updateData.status = data.status as UserStatus;
 
     if (data.roleId) {
       const role =

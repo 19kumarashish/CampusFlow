@@ -1,20 +1,19 @@
-import { ApiError } from "@/utils/ApiError";
-import {
-  hashPassword,
-  comparePassword,
-} from "@/shared/security/bcrypt";
-
 import { roleRepository as defaultRoleRepository } from "@/modules/roles/repositories/role.repository";
-import { userRepository as defaultUserRepository } from "../repositories/user.repository";
+import { UserStatus } from "@/shared/enums/user-status.enum";
+import {
+  comparePassword,
+  hashPassword,
+} from "@/shared/security/bcrypt";
+import { ApiError } from "@/utils/ApiError";
 
 import { IUser } from "../models/user.interface";
-
+import { userRepository as defaultUserRepository } from "../repositories/user.repository";
 import {
+  ChangePasswordInput,
   CreateUserInput,
   GetUsersQueryInput,
-  UpdateUserInput,
-  ChangePasswordInput,
   UpdateProfileInput,
+  UpdateUserInput,
 } from "../validators/user.validator";
 
 export class UserService {
@@ -22,7 +21,7 @@ export class UserService {
     private userRepository = defaultUserRepository,
     private roleRepository = defaultRoleRepository,
     private hashFn = hashPassword,
-  ) {}
+  ) { }
 
   async createUser(data: CreateUserInput) {
     const existingUser =
@@ -144,9 +143,14 @@ export class UserService {
       }
     }
 
-    const updateData: Partial<IUser> = {
-      ...data,
-    };
+    const updateData: Partial<IUser> = {};
+
+    if (data.firstName) updateData.firstName = data.firstName;
+    if (data.lastName) updateData.lastName = data.lastName;
+    if (data.email) updateData.email = data.email;
+    if (data.phone) updateData.phone = data.phone;
+    if (data.avatar) updateData.avatar = data.avatar;
+    if (data.status) updateData.status = data.status as unknown as UserStatus;
 
     if (data.roleId) {
       const role =
@@ -162,7 +166,6 @@ export class UserService {
       }
 
       updateData.role = role._id;
-      delete (updateData as any).roleId;
     }
 
     if (data.password) {

@@ -5,6 +5,10 @@ import eslintConfigPrettier from "eslint-config-prettier";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 
 export default [
+  // Ignore compiled and dependency files globally
+  {
+    ignores: ["dist/**", "node_modules/**"],
+  },
   js.configs.recommended,
 
   ...tseslint.configs.recommended,

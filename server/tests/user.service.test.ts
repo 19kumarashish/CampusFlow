@@ -1,9 +1,10 @@
-const { expect } = require("chai");
+import { expect } from "chai";
 
-const { ApiError } = require("../src/utils/ApiError");
-const { UserService } = require("../src/modules/users/services/user.service");
-const { userRepository } = require("../src/modules/users/repositories/user.repository");
-const { User } = require("../src/modules/users/models/user.model");
+import { User } from "../src/modules/users/models/user.model";
+import { userRepository } from "../src/modules/users/repositories/user.repository";
+import { UserService } from "../src/modules/users/services/user.service";
+import type { CreateUserInput } from "../src/modules/users/validators/user.validator";
+import { ApiError } from "../src/utils/ApiError";
 
 const baseUserData = {
     firstName: "Test",
@@ -18,7 +19,8 @@ describe("UserService", () => {
     it("creates a new user when email is available and role exists", async () => {
         const mockUserRepository = {
             findByEmail: async () => null,
-            create: async (data) => ({
+            findByPhone: async () => null,
+            create: async (data: Record<string, unknown>) => ({
                 _id: "user-1",
                 ...data,
                 createdAt: new Date(),
@@ -33,10 +35,10 @@ describe("UserService", () => {
         const service = new UserService(
             mockUserRepository,
             mockRoleRepository,
-            async (password) => `hashed:${password}`,
+            async (password: string) => `hashed:${password}`,
         );
 
-        const result = await service.createUser(baseUserData);
+        const result = await service.createUser(baseUserData as CreateUserInput);
 
         expect(result).to.include({
             email: baseUserData.email,
@@ -51,6 +53,7 @@ describe("UserService", () => {
     it("throws a conflict error when the email already exists", async () => {
         const mockUserRepository = {
             findByEmail: async () => ({ email: baseUserData.email }),
+            findByPhone: async () => null,
             create: async () => null,
         };
 
@@ -61,21 +64,23 @@ describe("UserService", () => {
         const service = new UserService(
             mockUserRepository,
             mockRoleRepository,
-            async (password) => `hashed:${password}`,
+            async (password: string) => `hashed:${password}`,
         );
 
         try {
-            await service.createUser(baseUserData);
+            await service.createUser(baseUserData as CreateUserInput);
             expect.fail("Expected createUser to throw ApiError");
-        } catch (error) {
-            expect(error).to.be.instanceOf(ApiError);
-            expect(error.message).to.equal("Email already exists");
+        } catch (error: unknown) {
+            const err = error as ApiError;
+            expect(err).to.be.instanceOf(ApiError);
+            expect(err.message).to.equal("Email already exists");
         }
     });
 
     it("throws a not found error when the role does not exist", async () => {
         const mockUserRepository = {
             findByEmail: async () => null,
+            findByPhone: async () => null,
             create: async () => null,
         };
 
@@ -86,27 +91,29 @@ describe("UserService", () => {
         const service = new UserService(
             mockUserRepository,
             mockRoleRepository,
-            async (password) => `hashed:${password}`,
+            async (password: string) => `hashed:${password}`,
         );
 
         try {
-            await service.createUser(baseUserData);
+            await service.createUser(baseUserData as CreateUserInput);
             expect.fail("Expected createUser to throw ApiError");
-        } catch (error) {
-            expect(error).to.be.instanceOf(ApiError);
-            expect(error.message).to.equal("Role not found");
+        } catch (error: unknown) {
+            const err = error as ApiError;
+            expect(err).to.be.instanceOf(ApiError);
+            expect(err.message).to.equal("Role not found");
         }
     });
 
     it("finds a user by phone through the repository", async () => {
         const originalFindOne = User.findOne;
-        User.findOne = async () => ({ _id: "user-2", phone: baseUserData.phone });
+        // monkey-patch the mongoose model for this unit test
+        (User as unknown as { findOne?: (...args: unknown[]) => Promise<Record<string, unknown>> }).findOne = async () => ({ _id: "user-2", phone: baseUserData.phone });
 
         try {
             const result = await userRepository.findByPhone(baseUserData.phone);
             expect(result).to.deep.include({ phone: baseUserData.phone });
         } finally {
-            User.findOne = originalFindOne;
+            (User as unknown as { findOne?: (...args: unknown[]) => Promise<Record<string, unknown>> }).findOne = originalFindOne;
         }
     });
 });

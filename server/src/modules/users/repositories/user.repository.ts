@@ -2,7 +2,7 @@ import { IUser } from "../models/user.interface";
 import { User } from "../models/user.model";
 import { GetUsersQueryInput } from "../validators/user.validator";
 
-class UserRepository {
+export class UserRepository {
   async create(userData: Partial<IUser>) {
     return User.create(userData);
   }

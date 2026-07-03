@@ -2,7 +2,7 @@ import { Role } from "@/modules/roles/models/role.model";
 
 import { IRole } from "../models/role.interface";
 
-class RoleRepository {
+export class RoleRepository {
   async findById(id: string) {
     return Role.findById(id);
   }

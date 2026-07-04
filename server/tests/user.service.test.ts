@@ -1,12 +1,12 @@
 import { expect } from "chai";
 
+import type { RoleRepository } from "../src/modules/roles/repositories/role.repository";
 import { User } from "../src/modules/users/models/user.model";
+import type { UserRepository } from "../src/modules/users/repositories/user.repository";
 import { userRepository } from "../src/modules/users/repositories/user.repository";
 import { UserService } from "../src/modules/users/services/user.service";
-import { ApiError } from "../src/utils/ApiError";
 import type { CreateUserInput } from "../src/modules/users/validators/user.validator";
-import type { UserRepository } from "../src/modules/users/repositories/user.repository";
-import type { RoleRepository } from "../src/modules/roles/repositories/role.repository";
+import { ApiError } from "../src/utils/ApiError";
 
 const baseUserData = {
     firstName: "Test",

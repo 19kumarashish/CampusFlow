@@ -1,3 +1,6 @@
+import { QueryBuilder } from "@/shared/builders/query.builder";
+import { buildPaginationMeta } from "@/shared/utils/pagination";
+
 import { IUser } from "../models/user.interface";
 import { User } from "../models/user.model";
 import { GetUsersQueryInput } from "../validators/user.validator";
@@ -28,41 +31,9 @@ export class UserRepository {
   }
 
   async findAll(query: GetUsersQueryInput) {
-    const {
-      page,
-      limit,
-      search,
-      status,
-      role,
-      sort,
-    } = query;
-
-    const skip = (page - 1) * limit;
+    const { page, limit, status, role, sortBy, sortOrder } = query;
 
     const filter: Record<string, unknown> = {};
-
-    if (search) {
-      filter.$or = [
-        {
-          firstName: {
-            $regex: search,
-            $options: "i",
-          },
-        },
-        {
-          lastName: {
-            $regex: search,
-            $options: "i",
-          },
-        },
-        {
-          email: {
-            $regex: search,
-            $options: "i",
-          },
-        },
-      ];
-    }
 
     if (status) {
       filter.status = status;
@@ -72,27 +43,27 @@ export class UserRepository {
       filter.role = role;
     }
 
-    const [users, total] = await Promise.all([
-      User.find(filter)
-        .populate("role")
-        .select("-password")
-        .sort(sort)
-        .skip(skip)
-        .limit(limit),
+    const baseQuery = User.find(filter)
+      .populate("role")
+      .select("-password");
 
+    const queryBuilder = new QueryBuilder(baseQuery, query, {
+      defaultSortBy: sortBy ?? "createdAt",
+      defaultSortOrder: sortOrder ?? "desc",
+    });
+
+    const [users, total] = await Promise.all([
+      queryBuilder
+        .search(["firstName", "lastName", "email"])
+        .sort()
+        .paginate(page, limit)
+        .execute(),
       User.countDocuments(filter),
     ]);
 
     return {
       users,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit),
-        hasNextPage: page * limit < total,
-        hasPreviousPage: page > 1,
-      },
+      pagination: buildPaginationMeta(page, limit, total),
     };
   }
 

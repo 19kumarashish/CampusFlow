@@ -1,16 +1,38 @@
-## Features Completed
+##  Authentication
+- JWT Authentication
+- Refresh Token
+- Logout
+- Role-Based Access Control
 
-### Authentication
-- [x] JWT Authentication
-- [x] Refresh Token
-- [x] Role-Based Access Control
-- [x] Database Seeder
+##  User Management
+- Create User
+- Get Users
+- Get User By ID
+- Update User
+- Soft Delete
+- Change Password
+- Update Profile
 
-### User Management
-- [x] Create User
-- [x] Get All Users
-- [x] Get User By ID
-- [x] Update User
-- [x] Soft Delete User
-- [x] Change Password
-- [x] Update Profile
+##  Department Management
+- Create Department
+- Get Departments
+- Get Department By ID
+- Update Department
+- Soft Delete
+- Search
+- Pagination
+- Sorting
+- Filtering
+
+##  Course Management
+- Create Course
+- Get Courses
+- Get Course By ID
+- Update Course
+- Soft Delete
+- Department Relationship
+- Degree Type
+- Search
+- Pagination
+- Sorting
+- Filtering

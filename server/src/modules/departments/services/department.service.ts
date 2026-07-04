@@ -1,3 +1,4 @@
+import { BaseService } from "@/shared/services/base.service";
 import { ApiError } from "@/utils/ApiError";
 
 import { departmentRepository as defaultDepartmentRepository } from "../repositories/department.repository";
@@ -7,10 +8,12 @@ import {
   UpdateDepartmentInput,
 } from "../validators/department.validator";
 
-export class DepartmentService {
+export class DepartmentService extends BaseService {
   constructor(
     private departmentRepository = defaultDepartmentRepository,
-  ) {}
+  ) {
+    super();
+  }
 
   async createDepartment(
     data: CreateDepartmentInput,
@@ -48,14 +51,7 @@ export class DepartmentService {
     const department =
       await this.departmentRepository.findById(id);
 
-    if (!department) {
-      throw new ApiError(
-        404,
-        "Department not found",
-      );
-    }
-
-    return department;
+    return this.findOrFail(department, "Department");
   }
 
   async updateDepartment(
@@ -65,16 +61,11 @@ export class DepartmentService {
     const department =
       await this.departmentRepository.findById(id);
 
-    if (!department) {
-      throw new ApiError(
-        404,
-        "Department not found",
-      );
-    }
+    const existingDepartment = await this.findOrFail(department, "Department");
 
     if (
       data.name &&
-      data.name !== department.name
+      data.name !== existingDepartment.name
     ) {
       const existing =
         await this.departmentRepository.findByName(
@@ -91,7 +82,7 @@ export class DepartmentService {
 
     if (
       data.code &&
-      data.code !== department.code
+      data.code !== existingDepartment.code
     ) {
       const existing =
         await this.departmentRepository.findByCode(
@@ -118,19 +109,8 @@ export class DepartmentService {
         id,
       );
 
-    if (!department) {
-      throw new ApiError(
-        404,
-        "Department not found",
-      );
-    }
-
-    if (department.deletedAt) {
-      throw new ApiError(
-        400,
-        "Department is already deleted",
-      );
-    }
+    const existingDepartment = await this.findOrFail(department, "Department");
+    await this.ensureNotDeleted(existingDepartment, "Department");
 
     return this.departmentRepository.softDeleteById(
       id,

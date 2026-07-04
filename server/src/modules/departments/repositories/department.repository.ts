@@ -1,18 +1,15 @@
-// Use a generic record for filter to avoid mismatched mongoose type exports across versions
-
+import { QueryBuilder } from "@/shared/builders/query.builder";
 import { Status } from "@/shared/enums/status.enum";
+import { BaseRepository } from "@/shared/repositories/base.repository";
+import { buildPaginationMeta } from "@/shared/utils/pagination";
 
 import { IDepartment } from "../models/department.interface";
 import { Department } from "../models/department.model";
 import { GetDepartmentsQueryInput } from "../validators/department.validator";
 
-class DepartmentRepository {
-    async create(data: Partial<IDepartment>) {
-        return Department.create(data);
-    }
-
-    async findById(id: string) {
-        return Department.findById(id);
+class DepartmentRepository extends BaseRepository<IDepartment> {
+    constructor() {
+        super(Department);
     }
 
     async findByName(name: string) {
@@ -23,84 +20,41 @@ class DepartmentRepository {
         return Department.findOne({ code });
     }
 
-    async findAll(
-        query: GetDepartmentsQueryInput,
-    ) {
-        const {
-            page,
-            limit,
-            search,
-            status,
-            sortBy,
-            sortOrder,
-        } = query;
+    async findAll(query: GetDepartmentsQueryInput) {
+        const { page, limit, status, sortBy, sortOrder } = query;
 
         const filter: Record<string, unknown> = {};
-
-        if (search) {
-            filter.$or = [
-                {
-                    name: {
-                        $regex: search,
-                        $options: "i",
-                    },
-                },
-                {
-                    code: {
-                        $regex: search,
-                        $options: "i",
-                    },
-                },
-            ];
-        }
 
         if (status) {
             filter.status = status;
         }
 
-        const skip = (page - 1) * limit;
+        const baseQuery = Department.find(filter);
+        const queryBuilder = new QueryBuilder(baseQuery, query, {
+            defaultSortBy: sortBy ?? "createdAt",
+            defaultSortOrder: sortOrder ?? "desc",
+        });
 
-        const [departments, total] =
-            await Promise.all([
-                Department.find(filter)
-                    .sort({
-                        [sortBy]:
-                            sortOrder === "asc"
-                                ? 1
-                                : -1,
-                    })
-                    .skip(skip)
-                    .limit(limit),
-
-                Department.countDocuments(filter),
-            ]);
+        const [departments, total] = await Promise.all([
+            queryBuilder
+                .search(["name", "code"])
+                .sort()
+                .paginate(page, limit)
+                .execute(),
+            Department.countDocuments(filter),
+        ]);
 
         return {
             departments,
-            pagination: {
-                total,
-                page,
-                limit,
-                totalPages: Math.ceil(
-                    total / limit,
-                ),
-            },
+            pagination: buildPaginationMeta(page, limit, total),
         };
     }
 
-    async updateById(
-        id: string,
-        data: Partial<IDepartment>,
-    ) {
+    async updateById(id: string, data: Partial<IDepartment>) {
         return Department.findByIdAndUpdate(
             id,
-            {
-                $set: data,
-            },
-            {
-                new: true,
-                runValidators: true,
-            },
+            { $set: data },
+            { new: true, runValidators: true },
         );
     }
 
@@ -113,13 +67,9 @@ class DepartmentRepository {
                     deletedAt: new Date(),
                 },
             },
-            {
-                new: true,
-                runValidators: true,
-            },
+            { new: true, runValidators: true },
         );
     }
 }
 
-export const departmentRepository =
-    new DepartmentRepository();
+export const departmentRepository = new DepartmentRepository();

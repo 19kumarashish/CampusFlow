@@ -1,7 +1,7 @@
-import { DegreeType } from "@/shared/enums/degree-type.enum";
 import { Status } from "@/shared/enums/status.enum";
+import { SubjectType } from "@/shared/enums/subject-type.enum";
 
-export interface GetCoursesQueryDto {
+export interface GetSubjectsQueryDto {
   page?: number;
 
   limit?: number;
@@ -10,7 +10,11 @@ export interface GetCoursesQueryDto {
 
   department?: string;
 
-  degree?: DegreeType;
+  course?: string;
+
+  semester?: number;
+
+  type?: SubjectType;
 
   status?: Status;
 

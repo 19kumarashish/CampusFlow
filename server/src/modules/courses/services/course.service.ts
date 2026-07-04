@@ -1,21 +1,24 @@
-import { ApiError } from "@/utils/ApiError";
 import { Types } from "mongoose";
 
-import { courseRepository as defaultCourseRepository } from "../repositories/course.repository";
-import { ICourse } from "../models/course.interface";
 import { departmentRepository as defaultDepartmentRepository } from "@/modules/departments/repositories/department.repository";
+import { BaseService } from "@/shared/services/base.service";
+import { ApiError } from "@/utils/ApiError";
 
+import { ICourse } from "../models/course.interface";
+import { courseRepository as defaultCourseRepository } from "../repositories/course.repository";
 import {
     CreateCourseInput,
     GetCoursesQueryInput,
     UpdateCourseInput,
 } from "../validators/course.validator";
 
-export class CourseService {
+export class CourseService extends BaseService {
     constructor(
         private courseRepository = defaultCourseRepository,
         private departmentRepository = defaultDepartmentRepository,
-    ) { }
+    ) {
+        super();
+    }
 
     async createCourse(
         data: CreateCourseInput,
@@ -72,14 +75,7 @@ export class CourseService {
         const course =
             await this.courseRepository.findById(id);
 
-        if (!course) {
-            throw new ApiError(
-                404,
-                "Course not found",
-            );
-        }
-
-        return course;
+        return this.findOrFail(course, "Course");
     }
 
     async updateCourse(
@@ -89,12 +85,7 @@ export class CourseService {
         const course =
             await this.courseRepository.findById(id);
 
-        if (!course) {
-            throw new ApiError(
-                404,
-                "Course not found",
-            );
-        }
+        const existingCourse = await this.findOrFail(course, "Course");
 
         if (data.department) {
             const department =
@@ -112,7 +103,7 @@ export class CourseService {
 
         if (
             data.name &&
-            data.name !== course.name
+            data.name !== existingCourse.name
         ) {
             const existing =
                 await this.courseRepository.findByName(
@@ -129,7 +120,7 @@ export class CourseService {
 
         if (
             data.code &&
-            data.code !== course.code
+            data.code !== existingCourse.code
         ) {
             const existing =
                 await this.courseRepository.findByCode(
@@ -161,19 +152,8 @@ export class CourseService {
         const course =
             await this.courseRepository.findById(id);
 
-        if (!course) {
-            throw new ApiError(
-                404,
-                "Course not found",
-            );
-        }
-
-        if (course.deletedAt) {
-            throw new ApiError(
-                400,
-                "Course is already deleted",
-            );
-        }
+        const existingCourse = await this.findOrFail(course, "Course");
+        await this.ensureNotDeleted(existingCourse, "Course");
 
         return this.courseRepository.softDeleteById(
             id,

@@ -6,12 +6,12 @@ import { UserRole } from "@/shared/enums/user-role.enum";
 import { validateObjectId } from "@/shared/middlewares/validate-object-id.middleware";
 
 import {
-  createSubject,
-  deleteSubject,
-  getSubjectById,
-  getSubjects,
-  updateSubject,
-} from "../controllers/subject.controller";
+  createFaculty,
+  deleteFaculty,
+  getFaculties,
+  getFacultyById,
+  updateFaculty,
+} from "../controllers/faculty.controller";
 
 const router = Router();
 
@@ -19,20 +19,20 @@ router.post(
   "/",
   protect,
   authorize(UserRole.ADMIN),
-  createSubject,
+  createFaculty,
 );
 
 router.get(
   "/",
   protect,
-  getSubjects,
+  getFaculties,
 );
 
 router.get(
   "/:id",
   protect,
   validateObjectId(),
-  getSubjectById,
+  getFacultyById,
 );
 
 router.patch(
@@ -40,7 +40,7 @@ router.patch(
   protect,
   authorize(UserRole.ADMIN),
   validateObjectId(),
-  updateSubject,
+  updateFaculty,
 );
 
 router.delete(
@@ -48,7 +48,7 @@ router.delete(
   protect,
   authorize(UserRole.ADMIN),
   validateObjectId(),
-  deleteSubject,
+  deleteFaculty,
 );
 
 export default router;

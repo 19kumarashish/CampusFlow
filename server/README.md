@@ -36,3 +36,29 @@
 - Pagination
 - Sorting
 - Filtering
+
+##  Subject Management
+
+- Create Subject
+- Get Subjects
+- Get Subject By ID
+- Update Subject
+- Soft Delete
+- Department Relationship
+- Course Relationship
+- Semester Validation
+- Credits
+- Subject Types
+- Search
+- Pagination
+- Filtering
+- Sorting
+
+##  Shared Architecture
+
+- Shared Pagination Validation
+- ObjectId Validation Middleware
+- Layered Architecture
+- Repository Pattern
+- Service Layer
+- Zod Validation

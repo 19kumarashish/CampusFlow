@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import { Types } from "mongoose";
 
-import { ApiError } from "@/utils/ApiError";
 import { ApiResponse } from "@/utils/ApiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";
 
@@ -50,10 +48,6 @@ export const getUserById = asyncHandler(
   async (req: Request, res: Response) => {
     const id = String(req.params.id);
 
-    if (Array.isArray(req.params.id) || !Types.ObjectId.isValid(id)) {
-      throw new ApiError(400, "Invalid user id");
-    }
-
     const user = await userService.getUserById(id);
 
     res.status(200).json(
@@ -69,10 +63,6 @@ export const getUserById = asyncHandler(
 export const updateUser = asyncHandler(
   async (req: Request, res: Response) => {
     const id = String(req.params.id);
-
-    if (Array.isArray(req.params.id) || !Types.ObjectId.isValid(id)) {
-      throw new ApiError(400, "Invalid user id");
-    }
 
     const data = updateUserSchema.parse(req.body);
 
@@ -94,10 +84,6 @@ export const updateUser = asyncHandler(
 export const deleteUser = asyncHandler(
   async (req: Request, res: Response) => {
     const id = String(req.params.id);
-
-    if (Array.isArray(req.params.id) || !Types.ObjectId.isValid(id)) {
-      throw new ApiError(400, "Invalid user id");
-    }
 
     const user = await userService.deleteUser(id);
 

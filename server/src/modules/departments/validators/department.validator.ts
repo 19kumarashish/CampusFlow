@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { Status } from "@/shared/enums/status.enum";
+import { paginationSchema } from "@/shared/validators/pagination.validator";
 
 export const createDepartmentSchema = z.object({
   name: z
@@ -26,7 +27,7 @@ export const createDepartmentSchema = z.object({
 export type CreateDepartmentInput =
   z.infer<typeof createDepartmentSchema>;
 
-  export const updateDepartmentSchema = z.object({
+export const updateDepartmentSchema = z.object({
   name: z
     .string()
     .trim()
@@ -55,36 +56,17 @@ export type CreateDepartmentInput =
 
 export type UpdateDepartmentInput =
   z.infer<typeof updateDepartmentSchema>;
-  export const getDepartmentsQuerySchema =
-  z.object({
-    page: z.coerce.number().min(1).default(1),
 
-    limit: z.coerce
-      .number()
-      .min(1)
-      .max(100)
-      .default(10),
-
-    search: z.string().optional(),
+export const getDepartmentsQuerySchema =
+  paginationSchema.extend({
+    search: z
+      .string()
+      .trim()
+      .optional(),
 
     status: z
       .nativeEnum(Status)
       .optional(),
-
-    sortBy: z
-      .enum([
-        "name",
-        "code",
-        "createdAt",
-      ])
-      .default("createdAt"),
-
-    sortOrder: z
-      .enum([
-        "asc",
-        "desc",
-      ])
-      .default("desc"),
   });
 
 export type GetDepartmentsQueryInput =

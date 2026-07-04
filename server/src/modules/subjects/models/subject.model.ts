@@ -1,10 +1,11 @@
 import { model,Schema } from "mongoose";
 
 import { Status } from "@/shared/enums/status.enum";
+import { SubjectType } from "@/shared/enums/subject-type.enum";
 
-import { ICourse } from "./course.interface";
+import { ISubject } from "./subject.interface";
 
-const courseSchema = new Schema<ICourse>(
+const subjectSchema = new Schema<ISubject>(
   {
     name: {
       type: String,
@@ -15,9 +16,8 @@ const courseSchema = new Schema<ICourse>(
     code: {
       type: String,
       required: true,
+      unique: true, // Creates a unique index
       uppercase: true,
-      unique: true,
-      trim: true,
     },
 
     department: {
@@ -26,22 +26,30 @@ const courseSchema = new Schema<ICourse>(
       required: true,
     },
 
-    degree: {
+    course: {
+      type: Schema.Types.ObjectId,
+      ref: "Course",
+      required: true,
+    },
+
+    semester: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 12,
+    },
+
+    credits: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 10,
+    },
+
+    type: {
       type: String,
-      required: true,
-      trim: true,
-    },
-
-    duration: {
-      type: Number,
-      required: true,
-      min: 1,
-    },
-
-    totalSemesters: {
-      type: Number,
-      required: true,
-      min: 1,
+      enum: Object.values(SubjectType),
+      default: SubjectType.THEORY,
     },
 
     status: {
@@ -57,17 +65,17 @@ const courseSchema = new Schema<ICourse>(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 // Indexes
-courseSchema.index({ code: 1 });
-courseSchema.index({ department: 1 });
-courseSchema.index({ status: 1 });
-courseSchema.index({ name: "text" });
+// code already has a unique index
+subjectSchema.index({ course: 1 });
+subjectSchema.index({ semester: 1 });
+subjectSchema.index({ status: 1 });
+subjectSchema.index({ name: "text" });
 
-// Export model
-export const Course = model<ICourse>(
-  "Course",
-  courseSchema,
+export const Subject = model<ISubject>(
+  "Subject",
+  subjectSchema
 );

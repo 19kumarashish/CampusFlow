@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+import { UserStatus } from "@/shared/enums/user-status.enum";
+import { paginationSchema } from "@/shared/validators/pagination.validator";
+
 export const createUserSchema = z.object({
   firstName: z
     .string()
@@ -82,12 +85,7 @@ export const updateUserSchema = z.object({
     .optional(),
 
   status: z
-    .enum([
-      "ACTIVE",
-      "INACTIVE",
-      "SUSPENDED",
-      "PENDING",
-    ])
+    .nativeEnum(UserStatus)
     .optional(),
 });
 
@@ -131,34 +129,31 @@ export const changePasswordSchema = z.object({
     .max(32),
 });
 
-export const getUsersQuerySchema = z.object({
-  page: z.coerce.number().min(1).default(1),
+export const getUsersQuerySchema =
+  paginationSchema.extend({
+    search: z
+      .string()
+      .trim()
+      .optional(),
 
-  limit: z.coerce.number().min(1).max(100).default(10),
+    status: z
+      .nativeEnum(UserStatus)
+      .optional(),
 
-  search: z
-    .string()
-    .trim()
-    .optional(),
+    role: z
+      .string()
+      .trim()
+      .optional(),
 
-  status: z
-    .enum([
-      "ACTIVE",
-      "INACTIVE",
-      "SUSPENDED",
-      "PENDING",
-    ])
-    .optional(),
-
-  role: z.string().optional(),
-
-  sort: z
-    .string()
-    .default("-createdAt"),
-});
-
-export type GetUsersQueryInput =
-  z.infer<typeof getUsersQuerySchema>;
+    sortBy: z
+      .enum([
+        "firstName",
+        "lastName",
+        "email",
+        "createdAt",
+      ])
+      .default("createdAt"),
+  });
 
 export type CreateUserInput =
   z.infer<typeof createUserSchema>;
@@ -171,3 +166,6 @@ export type UpdateProfileInput =
 
 export type ChangePasswordInput =
   z.infer<typeof changePasswordSchema>;
+
+export type GetUsersQueryInput =
+  z.infer<typeof getUsersQuerySchema>;

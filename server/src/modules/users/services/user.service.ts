@@ -4,6 +4,7 @@ import {
   comparePassword,
   hashPassword,
 } from "@/shared/security/bcrypt";
+import { BaseService } from "@/shared/services/base.service";
 import { ApiError } from "@/utils/ApiError";
 
 import { IUser } from "../models/user.interface";
@@ -16,12 +17,14 @@ import {
   UpdateUserInput,
 } from "../validators/user.validator";
 
-export class UserService {
+export class UserService extends BaseService {
   constructor(
     private userRepository = defaultUserRepository,
     private roleRepository = defaultRoleRepository,
     private hashFn = hashPassword,
-  ) { }
+  ) {
+    super();
+  }
 
   async createUser(data: CreateUserInput) {
     const existingUser =
@@ -85,14 +88,7 @@ export class UserService {
     const user =
       await this.userRepository.findById(id);
 
-    if (!user) {
-      throw new ApiError(
-        404,
-        "User not found",
-      );
-    }
-
-    return user;
+    return this.findOrFail(user, "User");
   }
 
   async updateUser(
@@ -102,16 +98,11 @@ export class UserService {
     const existingUser =
       await this.userRepository.findById(id);
 
-    if (!existingUser) {
-      throw new ApiError(
-        404,
-        "User not found",
-      );
-    }
+    const currentUser = await this.findOrFail(existingUser, "User");
 
     if (
       data.email &&
-      data.email !== existingUser.email
+      data.email !== currentUser.email
     ) {
       const emailExists =
         await this.userRepository.findByEmail(
@@ -128,7 +119,7 @@ export class UserService {
 
     if (
       data.phone &&
-      data.phone !== existingUser.phone
+      data.phone !== currentUser.phone
     ) {
       const phoneExists =
         await this.userRepository.findByPhone(
@@ -183,14 +174,9 @@ export class UserService {
     const user =
       await this.userRepository.findById(id);
 
-    if (!user) {
-      throw new ApiError(
-        404,
-        "User not found",
-      );
-    }
+    const existingUser = await this.findOrFail(user, "User");
 
-    if (user.status === "INACTIVE") {
+    if (existingUser.status === "INACTIVE") {
       throw new ApiError(
         400,
         "User is already inactive",
@@ -211,17 +197,12 @@ export class UserService {
         userId,
       );
 
-    if (!user) {
-      throw new ApiError(
-        404,
-        "User not found",
-      );
-    }
+    const existingUser = await this.findOrFail(user, "User");
 
     const isPasswordValid =
       await comparePassword(
         data.currentPassword,
-        user.password,
+        existingUser.password,
       );
 
     if (!isPasswordValid) {
@@ -266,16 +247,11 @@ export class UserService {
         userId,
       );
 
-    if (!user) {
-      throw new ApiError(
-        404,
-        "User not found",
-      );
-    }
+    const existingUser = await this.findOrFail(user, "User");
 
     if (
       data.phone &&
-      data.phone !== user.phone
+      data.phone !== existingUser.phone
     ) {
       const phoneExists =
         await this.userRepository.findByPhone(

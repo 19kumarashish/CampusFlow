@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import { Types } from "mongoose";
 
-import { ApiError } from "@/utils/ApiError";
 import { ApiResponse } from "@/utils/ApiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";
 
@@ -42,10 +40,6 @@ export const getDepartmentById = asyncHandler(
     async (req: Request, res: Response) => {
         const id = String(req.params.id);
 
-        if (Array.isArray(req.params.id) || !Types.ObjectId.isValid(id)) {
-            throw new ApiError(400, "Invalid department id");
-        }
-
         const department = await departmentService.getDepartmentById(id);
 
         res.status(200).json(
@@ -57,10 +51,6 @@ export const getDepartmentById = asyncHandler(
 export const updateDepartment = asyncHandler(
     async (req: Request, res: Response) => {
         const id = String(req.params.id);
-
-        if (Array.isArray(req.params.id) || !Types.ObjectId.isValid(id)) {
-            throw new ApiError(400, "Invalid department id");
-        }
 
         const data = updateDepartmentSchema.parse(req.body);
 
@@ -75,10 +65,6 @@ export const updateDepartment = asyncHandler(
 export const deleteDepartment = asyncHandler(
     async (req: Request, res: Response) => {
         const id = String(req.params.id);
-
-        if (Array.isArray(req.params.id) || !Types.ObjectId.isValid(id)) {
-            throw new ApiError(400, "Invalid department id");
-        }
 
         await departmentService.deleteDepartment(id);
 

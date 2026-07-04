@@ -1,17 +1,18 @@
 import { Router } from "express";
 
+import {
+  createSubject,
+  getSubjects,
+  getSubjectById,
+  updateSubject,
+  deleteSubject,
+} from "../controllers/subject.controller";
+
 import { protect } from "@/middlewares/auth.middleware";
 import { authorize } from "@/middlewares/authorize.middleware";
-import { UserRole } from "@/shared/enums/user-role.enum";
-import { validateObjectId } from "@/shared/middlewares/validate-object-id.middleware";
 
-import {
-  createCourse,
-  deleteCourse,
-  getCourseById,
-  getCourses,
-  updateCourse,
-} from "../controllers/course.controller";
+import { validateObjectId } from "@/shared/middlewares/validate-object-id.middleware";
+import { UserRole } from "@/shared/enums/user-role.enum";
 
 const router = Router();
 
@@ -19,20 +20,20 @@ router.post(
   "/",
   protect,
   authorize(UserRole.ADMIN),
-  createCourse,
+  createSubject,
 );
 
 router.get(
   "/",
   protect,
-  getCourses,
+  getSubjects,
 );
 
 router.get(
   "/:id",
   protect,
   validateObjectId(),
-  getCourseById,
+  getSubjectById,
 );
 
 router.patch(
@@ -40,7 +41,7 @@ router.patch(
   protect,
   authorize(UserRole.ADMIN),
   validateObjectId(),
-  updateCourse,
+  updateSubject,
 );
 
 router.delete(
@@ -48,7 +49,7 @@ router.delete(
   protect,
   authorize(UserRole.ADMIN),
   validateObjectId(),
-  deleteCourse,
+  deleteSubject,
 );
 
 export default router;

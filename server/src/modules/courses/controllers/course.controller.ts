@@ -1,16 +1,13 @@
 import { Request, Response } from "express";
-import { Types } from "mongoose";
 
-import { asyncHandler } from "@/utils/asyncHandler";
 import { ApiResponse } from "@/utils/ApiResponse";
-import { ApiError } from "@/utils/ApiError";
+import { asyncHandler } from "@/utils/asyncHandler";
 
 import { courseService } from "../services/course.service";
-
 import {
     createCourseSchema,
-    updateCourseSchema,
     getCoursesQuerySchema,
+    updateCourseSchema,
 } from "../validators/course.validator";
 
 export const createCourse = asyncHandler(
@@ -41,10 +38,6 @@ export const getCourseById = asyncHandler(
     async (req: Request, res: Response) => {
         const id = String(req.params.id);
 
-        if (Array.isArray(req.params.id) || !Types.ObjectId.isValid(id)) {
-            throw new ApiError(400, "Invalid course id");
-        }
-
         const course = await courseService.getCourseById(id);
 
         res.status(200).json(
@@ -56,10 +49,6 @@ export const getCourseById = asyncHandler(
 export const updateCourse = asyncHandler(
     async (req: Request, res: Response) => {
         const id = String(req.params.id);
-
-        if (Array.isArray(req.params.id) || !Types.ObjectId.isValid(id)) {
-            throw new ApiError(400, "Invalid course id");
-        }
 
         const data = updateCourseSchema.parse(req.body);
 
@@ -74,10 +63,6 @@ export const updateCourse = asyncHandler(
 export const deleteCourse = asyncHandler(
     async (req: Request, res: Response) => {
         const id = String(req.params.id);
-
-        if (Array.isArray(req.params.id) || !Types.ObjectId.isValid(id)) {
-            throw new ApiError(400, "Invalid course id");
-        }
 
         await courseService.deleteCourse(id);
 

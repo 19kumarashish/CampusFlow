@@ -1,7 +1,8 @@
 import { z } from "zod";
 
-import { Status } from "@/shared/enums/status.enum";
 import { DegreeType } from "@/shared/enums/degree-type.enum";
+import { Status } from "@/shared/enums/status.enum";
+import { paginationSchema } from "@/shared/validators/pagination.validator";
 
 export const createCourseSchema = z.object({
   name: z
@@ -17,7 +18,10 @@ export const createCourseSchema = z.object({
     .max(20, "Course code cannot exceed 20 characters")
     .transform((value) => value.toUpperCase()),
 
-  department: z.string().min(1, "Department is required"),
+  department: z
+    .string()
+    .trim()
+    .min(1, "Department is required"),
 
   degree: z.nativeEnum(DegreeType),
 
@@ -53,7 +57,10 @@ export const updateCourseSchema = z.object({
     .transform((value) => value.toUpperCase())
     .optional(),
 
-  department: z.string().optional(),
+  department: z
+    .string()
+    .trim()
+    .optional(),
 
   degree: z
     .nativeEnum(DegreeType)
@@ -82,22 +89,15 @@ export type UpdateCourseInput =
   z.infer<typeof updateCourseSchema>;
 
 export const getCoursesQuerySchema =
-  z.object({
-    page: z.coerce
-      .number()
-      .min(1)
-      .default(1),
-
-    limit: z.coerce
-      .number()
-      .min(1)
-      .max(100)
-      .default(10),
-
-    search: z.string().optional(),
+  paginationSchema.extend({
+    search: z
+      .string()
+      .trim()
+      .optional(),
 
     department: z
       .string()
+      .trim()
       .optional(),
 
     degree: z
@@ -112,19 +112,13 @@ export const getCoursesQuerySchema =
       .enum([
         "name",
         "code",
+        "degree",
+        "duration",
+        "totalSemesters",
         "createdAt",
       ])
       .default("createdAt"),
-
-    sortOrder: z
-      .enum([
-        "asc",
-        "desc",
-      ])
-      .default("desc"),
   });
 
 export type GetCoursesQueryInput =
-  z.infer<
-    typeof getCoursesQuerySchema
-  >;
+  z.infer<typeof getCoursesQuerySchema>;

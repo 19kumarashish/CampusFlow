@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 
-import { Status } from "@/shared/enums/status.enum";
 import { SemesterType } from "@/shared/enums/semester-type.enum";
+import { Status } from "@/shared/enums/status.enum";
 
 export interface UpdateSemesterDto {
   name?: string;

@@ -1,7 +1,7 @@
 import { Document, Types } from "mongoose";
 
-import { Status } from "@/shared/enums/status.enum";
 import { SemesterType } from "@/shared/enums/semester-type.enum";
+import { Status } from "@/shared/enums/status.enum";
 
 export interface ISemester extends Document {
   name: string;

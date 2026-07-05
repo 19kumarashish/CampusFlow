@@ -1,5 +1,5 @@
-import { Status } from "@/shared/enums/status.enum";
 import { SemesterType } from "@/shared/enums/semester-type.enum";
+import { Status } from "@/shared/enums/status.enum";
 
 export interface GetSemestersQueryDto {
   page?: number;

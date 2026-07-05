@@ -8,119 +8,114 @@ import { paginationSchema } from "@/shared/validators/pagination.validator";
 /*                           Create Semester Schema                           */
 /* -------------------------------------------------------------------------- */
 
-export const createSemesterSchema = z
-  .object({
-    name: z
-      .string()
-      .trim()
-      .min(2, "Semester name must be at least 2 characters")
-      .max(100, "Semester name cannot exceed 100 characters"),
+const semesterBaseSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, "Semester name must be at least 2 characters")
+    .max(100, "Semester name cannot exceed 100 characters"),
 
-    semesterNumber: z
-      .number()
-      .int()
-      .min(1)
-      .max(12),
+  semesterNumber: z
+    .number()
+    .int()
+    .min(1)
+    .max(12),
 
-    type: z.nativeEnum(SemesterType),
+  type: z.nativeEnum(SemesterType),
 
-    academicYear: z
-      .string()
-      .trim()
-      .regex(
-        /^\d{4}-\d{2}$/,
-        "Academic year must be in YYYY-YY format (e.g. 2026-27)",
-      ),
+  academicYear: z
+    .string()
+    .trim()
+    .regex(
+      /^\d{4}-\d{2}$/,
+      "Academic year must be in YYYY-YY format (e.g. 2026-27)",
+    ),
 
-    course: z
-      .string()
-      .trim()
-      .min(1, "Course is required"),
+  course: z
+    .string()
+    .trim()
+    .min(1, "Course is required"),
 
-    startDate: z.coerce.date(),
+  startDate: z.coerce.date(),
 
-    endDate: z.coerce.date(),
+  endDate: z.coerce.date(),
 
-    registrationStart: z.coerce.date(),
+  registrationStart: z.coerce.date(),
 
-    registrationEnd: z.coerce.date(),
+  registrationEnd: z.coerce.date(),
 
-    examStart: z.coerce.date(),
+  examStart: z.coerce.date(),
 
-    examEnd: z.coerce.date(),
+  examEnd: z.coerce.date(),
 
-    resultDate: z.coerce.date(),
+  resultDate: z.coerce.date(),
 
-    isCurrent: z
-      .boolean()
-      .default(false),
-  })
-  .superRefine((data, ctx) => {
+  isCurrent: z.boolean().default(false),
+});
+
+type SemesterValidationData = {
+  registrationStart: Date;
+  registrationEnd: Date;
+  startDate: Date;
+  endDate: Date;
+  examStart: Date;
+  examEnd: Date;
+  resultDate: Date;
+};
+
+const applySemesterRefinements = <T extends z.ZodTypeAny>(schema: T) =>
+  schema.superRefine((data, ctx) => {
+    const typedData = data as SemesterValidationData;
+
     // Registration period
-    if (
-      data.registrationStart >
-      data.registrationEnd
-    ) {
+    if (typedData.registrationStart > typedData.registrationEnd) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["registrationEnd"],
-        message:
-          "Registration end must be after registration start",
+        message: "Registration end must be after registration start",
       });
     }
 
     // Semester period
-    if (
-      data.startDate >
-      data.endDate
-    ) {
+    if (typedData.startDate > typedData.endDate) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["endDate"],
-        message:
-          "Semester end must be after semester start",
+        message: "Semester end must be after semester start",
       });
     }
 
     // Exam period
-    if (
-      data.examStart >
-      data.examEnd
-    ) {
+    if (typedData.examStart > typedData.examEnd) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["examEnd"],
-        message:
-          "Exam end must be after exam start",
+        message: "Exam end must be after exam start",
       });
     }
 
     // Exam cannot start before semester
-    if (
-      data.examStart <
-      data.startDate
-    ) {
+    if (typedData.examStart < typedData.startDate) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["examStart"],
-        message:
-          "Exam cannot start before the semester starts",
+        message: "Exam cannot start before the semester starts",
       });
     }
 
     // Result declaration
-    if (
-      data.resultDate <
-      data.examEnd
-    ) {
+    if (typedData.resultDate < typedData.examEnd) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["resultDate"],
-        message:
-          "Result date must be after exams end",
+        message: "Result date must be after exams end",
       });
     }
   });
+
+export const createSemesterSchema = applySemesterRefinements(
+  semesterBaseSchema,
+);
 
 export type CreateSemesterInput =
   z.infer<typeof createSemesterSchema>;
@@ -129,14 +124,11 @@ export type CreateSemesterInput =
 /*                           Update Semester Schema                           */
 /* -------------------------------------------------------------------------- */
 
-export const updateSemesterSchema =
-  createSemesterSchema
-    .partial()
-    .extend({
-      status: z
-        .nativeEnum(Status)
-        .optional(),
-    });
+export const updateSemesterSchema = applySemesterRefinements(
+  semesterBaseSchema.partial().extend({
+    status: z.nativeEnum(Status).optional(),
+  }),
+);
 
 export type UpdateSemesterInput =
   z.infer<typeof updateSemesterSchema>;

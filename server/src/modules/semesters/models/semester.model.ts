@@ -1,7 +1,7 @@
-import { Schema, model } from "mongoose";
+import { model,Schema } from "mongoose";
 
-import { Status } from "@/shared/enums/status.enum";
 import { SemesterType } from "@/shared/enums/semester-type.enum";
+import { Status } from "@/shared/enums/status.enum";
 
 import { ISemester } from "./semester.interface";
 

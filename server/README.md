@@ -62,3 +62,17 @@
 - Repository Pattern
 - Service Layer
 - Zod Validation
+
+## Completed Modules
+
+-  Authentication & Authorization
+-  Role Management
+-  User Management
+-  Department Management
+-  Course Management
+-  Subject Management
+-  Faculty Management
+-  Student Management
+-  Semester Management
+-  Section Management
+-  Enrollment Management

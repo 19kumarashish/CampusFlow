@@ -10,6 +10,7 @@ import sectionRoutes from "@/modules/sections/routes/section.routes";
 import semesterRoutes from "@/modules/semesters/routes/semester.routes";
 import studentRoutes from "@/modules/students/routes/student.routes";
 import subjectRoutes from "@/modules/subjects/routes/subject.routes";
+import timetableRoutes from "@/modules/timetable/routes/timetable.routes";
 import userRoutes from "@/modules/users/routes/user.routes";
 
 const router = Router();
@@ -35,5 +36,7 @@ router.use("/enrollments",enrollmentRoutes);
 router.use("/sections",sectionRoutes);
 
 router.use("/attendance",attendanceRoutes);
+
+router.use("/timetable",timetableRoutes);
 
 export default router;

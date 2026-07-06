@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import assignmentRoutes from "@/modules/assignments/routes/assignment.routes";
 import attendanceRoutes from "@/modules/attendance/routes/attendance.routes";
 import authRoutes from "@/modules/auth/routes/auth.routes";
 import courseRoutes from "@/modules/courses/routes/course.routes";
@@ -39,4 +40,5 @@ router.use("/attendance",attendanceRoutes);
 
 router.use("/timetable",timetableRoutes);
 
+router.use("/assignments",assignmentRoutes);
 export default router;

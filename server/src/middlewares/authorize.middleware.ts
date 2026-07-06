@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { AuthRequest } from "@/types/auth-request";
 import { ApiError } from "@/utils/ApiError";
 
-export const authorize = (requiredRole: string) => {
+export const authorize = (...requiredRoles: string[]) => {
     return async (
         req: Request,
         res: Response,
@@ -27,7 +27,7 @@ export const authorize = (requiredRole: string) => {
             return next(new ApiError(403, "Forbidden"));
         }
 
-        if (requiredRole !== roleName) {
+        if (!requiredRoles.includes(roleName)) {
             return next(new ApiError(403, "Forbidden"));
         }
 

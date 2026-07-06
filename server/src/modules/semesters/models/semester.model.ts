@@ -113,13 +113,6 @@ semesterSchema.index({
   academicYear: 1,
 });
 
-// Frequently used for fetching a specific semester
-semesterSchema.index({
-  course: 1,
-  semesterNumber: 1,
-  academicYear: 1,
-});
-
 // Ensure no duplicate semester exists for the same course & academic year
 semesterSchema.index(
   {

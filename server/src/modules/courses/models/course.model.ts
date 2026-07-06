@@ -61,7 +61,6 @@ const courseSchema = new Schema<ICourse>(
 );
 
 // Indexes
-courseSchema.index({ code: 1 });
 courseSchema.index({ department: 1 });
 courseSchema.index({ status: 1 });
 courseSchema.index({ name: "text" });

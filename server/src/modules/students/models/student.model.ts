@@ -125,8 +125,6 @@ const studentSchema = new Schema<IStudent>(
 /* -------------------------------------------------------------------------- */
 
 // Unique indexes (optional because unique already creates indexes)
-studentSchema.index({ studentId: 1 });
-studentSchema.index({ registrationNumber: 1 });
 
 // Single-field indexes
 studentSchema.index({ department: 1 });

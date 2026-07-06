@@ -48,14 +48,6 @@ const departmentSchema = new Schema<IDepartment>(
 // ==========================
 
 departmentSchema.index({
-  name: 1,
-});
-
-departmentSchema.index({
-  code: 1,
-});
-
-departmentSchema.index({
   status: 1,
 });
 

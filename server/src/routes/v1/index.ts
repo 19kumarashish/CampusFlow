@@ -3,6 +3,7 @@ import { Router } from "express";
 import authRoutes from "@/modules/auth/routes/auth.routes";
 import courseRoutes from "@/modules/courses/routes/course.routes";
 import departmentRoutes from "@/modules/departments/routes/department.routes";
+import enrollmentRoutes from "@/modules/enrollments/routes/enrollment.routes";
 import facultyRoutes from "@/modules/faculty/routes/faculty.routes";
 import sectionRoutes from "@/modules/sections/routes/section.routes";
 import semesterRoutes from "@/modules/semesters/routes/semester.routes";
@@ -27,6 +28,8 @@ router.use("/faculties", facultyRoutes);
 router.use("/students", studentRoutes);
 
 router.use("/semesters",semesterRoutes);
+
+router.use("/enrollments",enrollmentRoutes);
 
 router.use("/sections",sectionRoutes);
 

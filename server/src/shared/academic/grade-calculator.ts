@@ -1,0 +1,1 @@
+export { calculateGrade } from "@/shared/utils/grade-calculator";

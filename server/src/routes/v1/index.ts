@@ -8,6 +8,7 @@ import departmentRoutes from "@/modules/departments/routes/department.routes";
 import enrollmentRoutes from "@/modules/enrollments/routes/enrollment.routes";
 import examinationRoutes from "@/modules/examinations/routes/examination.routes";
 import facultyRoutes from "@/modules/faculty/routes/faculty.routes";
+import resultRoutes from "@/modules/results/routes/result.routes";
 import sectionRoutes from "@/modules/sections/routes/section.routes";
 import semesterRoutes from "@/modules/semesters/routes/semester.routes";
 import studentRoutes from "@/modules/students/routes/student.routes";
@@ -44,5 +45,7 @@ router.use("/timetable",timetableRoutes);
 router.use("/assignments",assignmentRoutes);
 
 router.use("/examinations",examinationRoutes);
+
+router.use("/results", resultRoutes);
 
 export default router;

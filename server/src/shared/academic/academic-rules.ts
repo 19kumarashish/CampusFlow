@@ -1,0 +1,11 @@
+export const AcademicRules = {
+  PASSING_PERCENTAGE: 40,
+
+  MAX_GRADE_POINT: 10,
+
+  MIN_CREDITS_PER_SEMESTER: 20,
+
+  MAX_CREDITS_PER_SEMESTER: 32,
+
+  MAX_MARKS: 100,
+};

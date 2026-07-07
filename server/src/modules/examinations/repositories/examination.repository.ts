@@ -324,6 +324,38 @@ class ExaminationRepository {
       id,
     );
   }
+
+  async getStudentExamMarks(
+    enrollmentId: string,
+    subjectId: string,
+  ) {
+    const examinations = await Examination.find({
+      subject: subjectId,
+      deletedAt: null,
+    });
+
+    if (!examinations.length) {
+      return null;
+    }
+
+    const examIds = examinations.map((e) => e._id);
+
+    const results = await ExamResult.find({
+      examination: { $in: examIds },
+      enrollment: enrollmentId,
+    });
+
+    if (results.length < examinations.length) {
+      return null;
+    }
+
+    const totalMarks = results.reduce(
+      (sum, res) => sum + res.obtainedMarks,
+      0,
+    );
+
+    return { obtainedMarks: totalMarks };
+  }
 }
 
 export const examinationRepository =

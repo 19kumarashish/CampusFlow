@@ -4,6 +4,7 @@ import assignmentRoutes from "@/modules/assignments/routes/assignment.routes";
 import attendanceRoutes from "@/modules/attendance/routes/attendance.routes";
 import authRoutes from "@/modules/auth/routes/auth.routes";
 import courseRoutes from "@/modules/courses/routes/course.routes";
+import dashboardRoutes from "@/modules/dashboard/routes/dashboard.routes";
 import departmentRoutes from "@/modules/departments/routes/department.routes";
 import enrollmentRoutes from "@/modules/enrollments/routes/enrollment.routes";
 import examinationRoutes from "@/modules/examinations/routes/examination.routes";
@@ -47,5 +48,7 @@ router.use("/assignments",assignmentRoutes);
 router.use("/examinations",examinationRoutes);
 
 router.use("/results", resultRoutes);
+
+router.use("/dashboard",dashboardRoutes);
 
 export default router;

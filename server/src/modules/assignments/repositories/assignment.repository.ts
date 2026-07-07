@@ -1,6 +1,7 @@
 import { QueryFilter } from "mongoose";
 
 import { AssignmentStatus } from "@/shared/enums/assignment-status.enum";
+import { SubmissionStatus } from "@/shared/enums/submission-status.enum";
 
 import { IAssignment } from "../models/assignment.interface";
 import { Assignment } from "../models/assignment.model";
@@ -294,6 +295,40 @@ class AssignmentRepository {
         runValidators: true,
       },
     );
+  }
+
+  async getStudentAssignmentMarks(
+    enrollmentId: string,
+    subjectId: string,
+  ) {
+    const assignments = await Assignment.find({
+      subject: subjectId,
+      status: AssignmentStatus.PUBLISHED,
+      deletedAt: null,
+    });
+
+    if (!assignments.length) {
+      return { marks: 0 };
+    }
+
+    const assignmentIds = assignments.map((a) => a._id);
+
+    const submissions = await Submission.find({
+      assignment: { $in: assignmentIds },
+      enrollment: enrollmentId,
+      status: SubmissionStatus.GRADED,
+    });
+
+    if (submissions.length < assignments.length) {
+      return null;
+    }
+
+    const totalMarks = submissions.reduce(
+      (sum, sub) => sum + (sub.marks || 0),
+      0,
+    );
+
+    return { marks: totalMarks };
   }
 }
 

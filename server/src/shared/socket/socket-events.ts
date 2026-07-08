@@ -1,19 +1,19 @@
 export const SocketEvents = {
-  CONNECT: "connect",
+    CONNECT: "connect",
 
-  DISCONNECT: "disconnect",
+    DISCONNECT: "disconnect",
 
-  NOTIFICATION: "notification",
+    JOIN: "join",
 
-  NOTIFICATION_COUNT:
-    "notification-count",
+    NOTIFICATION: "notification",
 
-  ANNOUNCEMENT:
-    "announcement",
+    NOTIFICATION_COUNT: "notification_count",
 
-  RESULT_PUBLISHED:
-    "result-published",
+    ANNOUNCEMENT: "announcement",
 
-  ASSIGNMENT_GRADED:
-    "assignment-graded",
+    RESULT_PUBLISHED:
+        "result-published",
+
+    ASSIGNMENT_GRADED:
+        "assignment-graded",
 } as const;

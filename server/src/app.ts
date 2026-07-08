@@ -32,13 +32,6 @@ app.use(morgan("dev"));
 
 app.use("/api", routes);
 
-app.get("/api/v1/health", (_req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "CampusFlow API is running",
-  });
-});
-
 app.use(notFoundHandler);
 
 app.use(errorHandler);

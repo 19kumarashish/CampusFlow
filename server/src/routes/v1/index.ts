@@ -3,6 +3,7 @@ import { Router } from "express";
 import assignmentRoutes from "@/modules/assignments/routes/assignment.routes";
 import attendanceRoutes from "@/modules/attendance/routes/attendance.routes";
 import authRoutes from "@/modules/auth/routes/auth.routes";
+import communicationRoutes from "@/modules/communication/routes/communication.routes";
 import courseRoutes from "@/modules/courses/routes/course.routes";
 import dashboardRoutes from "@/modules/dashboard/routes/dashboard.routes";
 import departmentRoutes from "@/modules/departments/routes/department.routes";
@@ -50,5 +51,7 @@ router.use("/examinations",examinationRoutes);
 router.use("/results", resultRoutes);
 
 router.use("/dashboard",dashboardRoutes);
+
+router.use("/communication", communicationRoutes);
 
 export default router;

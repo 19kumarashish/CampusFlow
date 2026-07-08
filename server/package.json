@@ -39,6 +39,8 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.3",
     "morgan": "^1.11.0",
+    "nodemailer": "^9.0.3",
+    "socket.io": "^4.8.3",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -53,6 +55,7 @@
     "@types/mocha": "^10.0.10",
     "@types/morgan": "^1.9.10",
     "@types/node": "^26.0.1",
+    "@types/nodemailer": "^8.0.1",
     "chai": "^4.5.0",
     "eslint": "^9.39.0",
     "eslint-config-prettier": "^10.1.8",

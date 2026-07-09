@@ -46,8 +46,10 @@ if (typeof window !== "undefined") {
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
+        const isRefreshRequest = originalRequest?.url?.includes("/auth/refresh-token");
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        // Ensure error response exists and check for 401 Unauthorized
+        if (error.response?.status === 401 && !originalRequest?._retry && !isRefreshRequest) {
           if (isRefreshing) {
             return new Promise((resolve, reject) => {
               failedQueue.push({ resolve, reject });
@@ -63,15 +65,15 @@ if (typeof window !== "undefined") {
           isRefreshing = true;
 
           try {
+            // Backend returns: ApiResponse<{ accessToken: string, user: User }>
             const response = await api.post("/auth/refresh-token");
-            const { accessToken } = response.data;
+            const { accessToken, user } = response.data.data;
 
-            // Update Redux store with new token
-            const state = store.getState();
+            // Update Redux store with new token and user details
             store.dispatch(
               setCredentials({
                 accessToken,
-                user: state.auth.user!,
+                user,
               })
             );
 
@@ -91,8 +93,10 @@ if (typeof window !== "undefined") {
 
             isRefreshing = false;
 
-            // Redirect to login
-            window.location.href = "/login";
+            // Redirect to login if not already on the login page
+            if (window.location.pathname !== "/login") {
+              window.location.href = "/login";
+            }
 
             return Promise.reject(err);
           }
@@ -105,4 +109,3 @@ if (typeof window !== "undefined") {
 
   setupInterceptors();
 }
-

@@ -66,8 +66,10 @@ export interface Result {
   _id: string;
   enrollment: string;
   subject: Subject;
-  marksObtained: number;
+  assignmentMarks: number;
+  examMarks: number;
   totalMarks: number;
+  percentage: number;
   grade: string;
   remarks?: string;
 }

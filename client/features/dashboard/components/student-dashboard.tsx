@@ -103,7 +103,9 @@ export default function StudentDashboard({ data }: StudentDashboardProps) {
               <thead>
                 <tr className="border-b border-slate-900 bg-slate-900/30 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
                   <th className="p-4">Subject</th>
-                  <th className="p-4 text-center">Marks Obtained</th>
+                  <th className="p-4 text-center">Assignments</th>
+                  <th className="p-4 text-center">Examinations</th>
+                  <th className="p-4 text-center">Total Grade Score</th>
                   <th className="p-4 text-center">Grade</th>
                   <th className="p-4">Remarks</th>
                 </tr>
@@ -118,8 +120,14 @@ export default function StudentDashboard({ data }: StudentDashboardProps) {
                           {res.subject?.code}
                         </p>
                       </td>
-                      <td className="p-4 text-center font-semibold text-white">
-                        {res.marksObtained} <span className="text-slate-500">/ {res.totalMarks}</span>
+                      <td className="p-4 text-center font-semibold text-slate-300">
+                        {res.assignmentMarks}
+                      </td>
+                      <td className="p-4 text-center font-semibold text-slate-300">
+                        {res.examMarks}
+                      </td>
+                      <td className="p-4 text-center font-bold text-white">
+                        {res.totalMarks} <span className="text-[10px] text-slate-500 font-medium">({res.percentage}%)</span>
                       </td>
                       <td className="p-4 text-center">
                         <span className="inline-block px-2.5 py-0.5 rounded font-extrabold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -31,30 +31,32 @@ export default function StudentDialog({
 
   // Fetch departments list
   const { data: deptData } = useDepartmentsQuery({ limit: 100, status: "ACTIVE" });
-  const activeDepartments = deptData?.departments || [];
+  const activeDepartments = useMemo(() => deptData?.departments || [], [deptData?.departments]);
 
   // Fetch courses list
   const { data: courseData } = useCoursesQuery({ limit: 100, status: "ACTIVE" });
-  const activeCourses = courseData?.courses || [];
+  const activeCourses = useMemo(() => courseData?.courses || [], [courseData?.courses]);
 
   // Fetch all user accounts to filter for students
   const { data: usersData } = useUsersQuery({ limit: 100 });
-  const allUsers = usersData?.users || [];
+  const allUsers = useMemo(() => usersData?.users || [], [usersData?.users]);
 
   // Fetch all student profiles to filter out already assigned users
   const { data: studentsData } = useStudentsQuery({ limit: 100 });
-  const existingStudents = studentsData?.students || [];
+  const existingStudents = useMemo(() => studentsData?.students || [], [studentsData?.students]);
 
   // Filter for STUDENT accounts
-  const studentsList = allUsers.filter((u) => u.role?.name === "STUDENT");
+  const studentsList = useMemo(() => allUsers.filter((u) => u.role?.name === "STUDENT"), [allUsers]);
 
   // Filter out students who already have a profile, EXCEPT the current one in Edit mode
-  const unassignedStudents = studentsList.filter((s) => {
-    if (isEditMode && student && student.user?._id === s._id) {
-      return true;
-    }
-    return !existingStudents.some((st) => st.user?._id === s._id);
-  });
+  const unassignedStudents = useMemo(() => {
+    return studentsList.filter((s) => {
+      if (isEditMode && student && student.user?._id === s._id) {
+        return true;
+      }
+      return !existingStudents.some((st) => st.user?._id === s._id);
+    });
+  }, [studentsList, existingStudents, isEditMode, student]);
 
   const currentYear = new Date().getFullYear();
 

@@ -34,3 +34,22 @@ export interface GetSemestersResponse {
   semesters: Semester[];
   pagination: PaginationMeta;
 }
+
+export interface CreateSemesterInput {
+  name: string;
+  semesterNumber: number;
+  type: SemesterType;
+  academicYear: string;
+  course: string; // Course ObjectId reference
+  startDate: string;
+  endDate: string;
+  registrationStart: string;
+  registrationEnd: string;
+  examStart: string;
+  examEnd: string;
+  resultDate: string;
+  isCurrent?: boolean;
+  status?: "ACTIVE" | "INACTIVE";
+}
+
+export interface UpdateSemesterInput extends Partial<CreateSemesterInput> {}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -31,19 +31,19 @@ export default function EnrollmentDialog({
 
   // Fetch active students
   const { data: studentsData } = useStudentsQuery({ limit: 100, status: "ACTIVE" });
-  const activeStudents = studentsData?.students || [];
+  const activeStudents = useMemo(() => studentsData?.students || [], [studentsData?.students]);
 
   // Fetch active courses
   const { data: coursesData } = useCoursesQuery({ limit: 100, status: "ACTIVE" });
-  const activeCourses = coursesData?.courses || [];
+  const activeCourses = useMemo(() => coursesData?.courses || [], [coursesData?.courses]);
 
   // Fetch active semesters
   const { data: semestersData } = useSemestersQuery({ limit: 100, status: "ACTIVE" });
-  const activeSemesters = semestersData?.semesters || [];
+  const activeSemesters = useMemo(() => semestersData?.semesters || [], [semestersData?.semesters]);
 
   // Fetch active sections
   const { data: sectionsData } = useSectionsQuery({ limit: 100, status: "ACTIVE" });
-  const activeSections = sectionsData?.sections || [];
+  const activeSections = useMemo(() => sectionsData?.sections || [], [sectionsData?.sections]);
 
   // Validation Schema
   const enrollmentSchema = z.object({
@@ -87,10 +87,12 @@ export default function EnrollmentDialog({
   const watchedCourseId = watch("course");
 
   // Filter semesters by Course ID
-  const filteredSemesters = activeSemesters.filter((s) => {
-    const courseId = typeof s.course === "string" ? s.course : (s.course as any)?._id;
-    return courseId === watchedCourseId;
-  });
+  const filteredSemesters = useMemo(() => {
+    return activeSemesters.filter((s) => {
+      const courseId = typeof s.course === "string" ? s.course : (s.course as any)?._id;
+      return courseId === watchedCourseId;
+    });
+  }, [activeSemesters, watchedCourseId]);
 
   // Auto-populate semester if semesters list updates
   useEffect(() => {
@@ -102,10 +104,12 @@ export default function EnrollmentDialog({
   const watchedSemesterId = watch("semester");
 
   // Filter sections by Semester ID
-  const filteredSections = activeSections.filter((sec) => {
-    const semId = typeof sec.semester === "string" ? sec.semester : sec.semester?._id;
-    return semId === watchedSemesterId;
-  });
+  const filteredSections = useMemo(() => {
+    return activeSections.filter((sec) => {
+      const semId = typeof sec.semester === "string" ? sec.semester : sec.semester?._id;
+      return semId === watchedSemesterId;
+    });
+  }, [activeSections, watchedSemesterId]);
 
   // Auto-populate section if sections list updates
   useEffect(() => {

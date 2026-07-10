@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -31,13 +31,13 @@ export default function TimetableDialog({
 
   // Fetch sections, subjects, and faculties list
   const { data: sectionData } = useSectionsQuery({ limit: 100, status: "ACTIVE" });
-  const activeSections = sectionData?.sections || [];
+  const activeSections = useMemo(() => sectionData?.sections || [], [sectionData?.sections]);
 
   const { data: subjectData } = useSubjectsQuery({ limit: 100, status: "ACTIVE" });
-  const activeSubjects = subjectData?.subjects || [];
+  const activeSubjects = useMemo(() => subjectData?.subjects || [], [subjectData?.subjects]);
 
   const { data: facultyData } = useFacultiesQuery({ limit: 100, status: "ACTIVE" });
-  const activeFaculties = facultyData?.faculties || [];
+  const activeFaculties = useMemo(() => facultyData?.faculties || [], [facultyData?.faculties]);
 
   const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 

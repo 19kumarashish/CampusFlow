@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -30,11 +30,11 @@ export default function SectionDialog({
 
   // Fetch active semesters
   const { data: semesterData } = useSemestersQuery({ limit: 100, status: "ACTIVE" });
-  const activeSemesters = semesterData?.semesters || [];
+  const activeSemesters = useMemo(() => semesterData?.semesters || [], [semesterData?.semesters]);
 
   // Fetch active faculties
   const { data: facultyData } = useFacultiesQuery({ limit: 100, status: "ACTIVE" });
-  const activeFaculties = facultyData?.faculties || [];
+  const activeFaculties = useMemo(() => facultyData?.faculties || [], [facultyData?.faculties]);
 
   // Validation Schema
   const sectionSchema = z.object({

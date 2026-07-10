@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -30,26 +30,28 @@ export default function FacultyDialog({
 
   // Fetch departments list
   const { data: deptData } = useDepartmentsQuery({ limit: 100, status: "ACTIVE" });
-  const activeDepartments = deptData?.departments || [];
+  const activeDepartments = useMemo(() => deptData?.departments || [], [deptData?.departments]);
 
   // Fetch all user accounts to filter for teachers
   const { data: usersData } = useUsersQuery({ limit: 100 });
-  const allUsers = usersData?.users || [];
+  const allUsers = useMemo(() => usersData?.users || [], [usersData?.users]);
 
   // Fetch all faculty profiles to filter out already assigned users
   const { data: facultiesData } = useFacultiesQuery({ limit: 100 });
-  const existingFaculties = facultiesData?.faculties || [];
+  const existingFaculties = useMemo(() => facultiesData?.faculties || [], [facultiesData?.faculties]);
 
   // Filter for TEACHER accounts
-  const teachers = allUsers.filter((u) => u.role?.name === "TEACHER");
+  const teachers = useMemo(() => allUsers.filter((u) => u.role?.name === "TEACHER"), [allUsers]);
 
   // Filter out teachers who already have a profile, EXCEPT the current one in Edit mode
-  const unassignedTeachers = teachers.filter((t) => {
-    if (isEditMode && faculty && faculty.user?._id === t._id) {
-      return true;
-    }
-    return !existingFaculties.some((f) => f.user?._id === t._id);
-  });
+  const unassignedTeachers = useMemo(() => {
+    return teachers.filter((t) => {
+      if (isEditMode && faculty && faculty.user?._id === t._id) {
+        return true;
+      }
+      return !existingFaculties.some((f) => f.user?._id === t._id);
+    });
+  }, [teachers, existingFaculties, isEditMode, faculty]);
 
   // Validation Schema
   const facultySchema = z.object({

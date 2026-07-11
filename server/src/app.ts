@@ -1,6 +1,6 @@
 import compression from "compression";
 import cookieParser from "cookie-parser";
-import cors from "cors";
+import cors, { type CorsOptions } from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -12,25 +12,53 @@ import routes from "./routes";
 
 const app = express();
 
-const allowedOrigins = env.CLIENT_URL.split(",").map((url) => url.trim());
+const allowedOrigins = env.CLIENT_URL.split(",")
+  .map((url) => url.trim())
+  .filter(Boolean);
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      const isAllowed =
-        allowedOrigins.includes(origin) ||
-        allowedOrigins.includes("*") ||
-        origin.endsWith(".vercel.app");
-      if (isAllowed) {
-        callback(null, true);
-      } else {
-        callback(new Error(`Origin ${origin} not allowed by CORS`));
-      }
-    },
-    credentials: true,
-  }),
-);
+const isAllowedOrigin = (origin: string | undefined): boolean => {
+  if (!origin) return true;
+
+  const normalizedOrigin = origin.trim().toLowerCase();
+
+  if (allowedOrigins.includes(normalizedOrigin) || allowedOrigins.includes("*")) {
+    return true;
+  }
+
+  return (
+    normalizedOrigin.startsWith("http://localhost:") ||
+    normalizedOrigin.startsWith("http://127.0.0.1:") ||
+    normalizedOrigin.startsWith("https://localhost:") ||
+    normalizedOrigin.endsWith(".vercel.app") ||
+    normalizedOrigin.endsWith(".vercel.dev") ||
+    normalizedOrigin.endsWith(".netlify.app")
+  );
+};
+
+const corsOptions: CorsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || isAllowedOrigin(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(null, false);
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "X-Requested-With",
+    "Accept",
+    "Origin",
+    "Cookie",
+  ],
+  exposedHeaders: ["Set-Cookie"],
+};
+
+app.use(cors(corsOptions));
+app.options(/(.*)/, cors(corsOptions));
 
 app.use(helmet());
 

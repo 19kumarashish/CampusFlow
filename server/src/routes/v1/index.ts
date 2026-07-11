@@ -18,6 +18,10 @@ import subjectRoutes from "@/modules/subjects/routes/subject.routes";
 import timetableRoutes from "@/modules/timetable/routes/timetable.routes";
 import userRoutes from "@/modules/users/routes/user.routes";
 
+import academicRoutes from "@/modules/academic/routes/academic.routes";
+import financeRoutes from "@/modules/finance/routes/finance.routes";
+import libraryRoutes from "@/modules/library/routes/library.routes";
+
 const router = Router();
 
 router.use("/auth", authRoutes);
@@ -53,5 +57,11 @@ router.use("/results", resultRoutes);
 router.use("/dashboard",dashboardRoutes);
 
 router.use("/communication", communicationRoutes);
+
+router.use("/academic", academicRoutes);
+
+router.use("/finance", financeRoutes);
+
+router.use("/library", libraryRoutes);
 
 export default router;

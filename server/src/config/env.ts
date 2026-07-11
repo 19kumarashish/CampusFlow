@@ -10,7 +10,7 @@ const envSchema = z.object({
 
   PORT: z.coerce.number().default(5000),
 
-  CLIENT_URL: z.string().url().default("http://localhost:3000"),
+  CLIENT_URL: z.string().default("http://localhost:3000"),
 
   MONGODB_URI: z.string().min(1),
 

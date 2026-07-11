@@ -70,17 +70,17 @@ export default function StudentDashboard({ data }: StudentDashboardProps) {
           return (
             <Card
               key={idx}
-              className="border-slate-800 bg-slate-950/40 p-6 backdrop-blur-xl transition-all duration-300 hover:border-slate-700 shadow-md"
+              className="border-border/40 bg-slate-950/30 p-6 backdrop-blur-xl transition-all duration-300 hover:border-primary/20 premium-grid-hover shadow-sm"
             >
               <div className="flex justify-between items-start">
                 <div className="space-y-1 overflow-hidden">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 truncate">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 truncate">
                     {item.title}
                   </p>
                   <h3 className="text-xl font-bold tracking-tight text-white mt-2 truncate">
                     {item.value}
                   </h3>
-                  <p className="text-xs text-slate-400 mt-1">{item.subValue}</p>
+                  <p className="text-[11px] text-slate-400 mt-1 font-semibold">{item.subValue}</p>
                 </div>
                 <div className={`p-2.5 rounded-xl shrink-0 ${item.bg} ${item.color}`}>
                   <Icon className="h-5 w-5" />
@@ -94,14 +94,14 @@ export default function StudentDashboard({ data }: StudentDashboardProps) {
       {/* Results & Timelines */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Academic Marks / Grades list */}
-        <Card className="lg:col-span-2 border-slate-800 bg-slate-950/40 p-6 backdrop-blur-xl space-y-4">
-          <h4 className="text-sm font-bold uppercase tracking-wider text-slate-300 border-b border-slate-900 pb-3 flex items-center gap-2">
+        <Card className="lg:col-span-2 border-border/40 bg-slate-950/30 p-6 backdrop-blur-xl space-y-4 hover:border-primary/10 premium-grid-hover">
+          <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-350 border-b border-border/40 pb-3 flex items-center gap-2">
             <Award className="h-4 w-4 text-emerald-400" /> Subject Grades & Results
           </h4>
-          <div className="overflow-x-auto rounded-lg border border-slate-900 bg-slate-950/50">
+          <div className="overflow-x-auto rounded-lg border border-border/40 bg-slate-950/10">
             <table className="w-full text-xs text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-900 bg-slate-900/30 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
+                <tr className="border-b border-border/40 bg-slate-900/30 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
                   <th className="p-4">Subject</th>
                   <th className="p-4 text-center">Assignments</th>
                   <th className="p-4 text-center">Examinations</th>
@@ -110,7 +110,7 @@ export default function StudentDashboard({ data }: StudentDashboardProps) {
                   <th className="p-4">Remarks</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-900 text-slate-300">
+              <tbody className="divide-y divide-border/40 text-slate-300">
                 {results.length ? (
                   results.map((res) => (
                     <tr key={res._id} className="hover:bg-slate-900/20 transition-colors">
@@ -141,7 +141,7 @@ export default function StudentDashboard({ data }: StudentDashboardProps) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={4} className="p-8 text-center text-slate-500">
+                    <td colSpan={6} className="p-8 text-center text-slate-500">
                       No subject grades released for this semester yet
                     </td>
                   </tr>
@@ -152,13 +152,13 @@ export default function StudentDashboard({ data }: StudentDashboardProps) {
         </Card>
 
         {/* Action Timelines / Deliverables */}
-        <Card className="lg:col-span-1 border-slate-800 bg-slate-950/40 p-6 backdrop-blur-xl space-y-6">
+        <Card className="lg:col-span-1 border-border/40 bg-slate-950/30 p-6 backdrop-blur-xl space-y-6 hover:border-primary/10 premium-grid-hover">
           {/* Homework due */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-900 pb-3 flex items-center gap-1.5">
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-350 border-b border-border/40 pb-3 flex items-center gap-1.5">
               <FileText className="h-4 w-4 text-indigo-400" /> Pending Assignments
             </h4>
-            <div className="mt-3 divide-y divide-slate-900/60">
+            <div className="mt-3 divide-y divide-border/40">
               {assignments.length ? (
                 assignments.map((assignment) => (
                   <div key={assignment._id} className="py-3 flex justify-between items-start text-xs">
@@ -185,10 +185,10 @@ export default function StudentDashboard({ data }: StudentDashboardProps) {
 
           {/* Examinations scheduled */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-900 pb-3 flex items-center gap-1.5">
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-350 border-b border-border/40 pb-3 flex items-center gap-1.5">
               <ClipboardList className="h-4 w-4 text-rose-400" /> Upcoming Exams
             </h4>
-            <div className="mt-3 divide-y divide-slate-900/60">
+            <div className="mt-3 divide-y divide-border/40">
               {examinations.length ? (
                 examinations.map((exam) => (
                   <div key={exam._id} className="py-3 flex justify-between items-start text-xs">
@@ -207,7 +207,7 @@ export default function StudentDashboard({ data }: StudentDashboardProps) {
                         })}
                       </span>
                       {exam.room && (
-                        <p className="text-[9px] text-slate-500 flex items-center gap-0.5 mt-1 justify-end uppercase">
+                        <p className="text-[9px] text-slate-500 flex items-center gap-0.5 mt-1 justify-end uppercase font-bold">
                           <MapPin className="h-2.5 w-2.5" /> Room {exam.room}
                         </p>
                       )}

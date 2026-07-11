@@ -94,13 +94,13 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
   };
 
   return (
-    <header className="h-16 border-b border-border/80 bg-background/80 backdrop-blur-md sticky top-0 z-30 px-6 flex items-center justify-between">
+    <header className="h-16 border-b border-border/40 bg-background/60 backdrop-blur-xl sticky top-0 z-30 px-6 flex items-center justify-between shadow-[0_2px_15px_rgba(0,0,0,0.02)]">
       {/* Left side: Hamburger (mobile) / Breadcrumbs (desktop) */}
       <div className="flex items-center gap-4">
         <Button
           variant="ghost"
           size="icon"
-          className="lg:hidden h-9 w-9 border border-border/80 bg-background text-muted-foreground"
+          className="lg:hidden h-9 w-9 border border-border/45 bg-background/40 text-muted-foreground"
           onClick={onMenuClick}
         >
           <Menu className="h-5 w-5" />
@@ -116,7 +116,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
         <input
           type="text"
           placeholder="Search workspace (Ctrl + K)"
-          className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/80 bg-muted/20 text-xs text-foreground placeholder-muted-foreground/60 focus:outline-none focus:border-primary/50 transition-colors"
+          className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/50 bg-muted/15 text-xs text-foreground placeholder-muted-foreground/60 focus:outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10 transition-all duration-200"
         />
       </div>
 
@@ -128,7 +128,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
             <Button
               variant="ghost"
               size="icon"
-              className="relative h-9 w-9 border border-border/80 bg-background text-muted-foreground hover:text-foreground cursor-pointer"
+              className="relative h-9 w-9 border border-border/45 bg-background/45 text-muted-foreground hover:text-foreground cursor-pointer"
             >
               <Bell className="h-4.5 w-4.5" />
               {unreadCount > 0 && (
@@ -138,7 +138,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
               )}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-80 mt-1 border-border/80 bg-card/95 backdrop-blur-md shadow-lg" align="end" forceMount>
+          <DropdownMenuContent className="w-80 mt-1 border border-border/40 bg-card/75 backdrop-blur-xl shadow-xl" align="end" forceMount>
             <div className="p-3 flex justify-between items-center text-xs border-b border-border/60">
               <span className="font-extrabold text-foreground uppercase tracking-wider">Alerts</span>
               {unreadCount > 0 && (
@@ -193,7 +193,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
           variant="ghost"
           size="icon"
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          className="h-9 w-9 border border-border/80 bg-background text-muted-foreground hover:text-foreground"
+          className="h-9 w-9 border border-border/45 bg-background/45 text-muted-foreground hover:text-foreground"
         >
           <Sun className="h-4.5 w-4.5 dark:hidden" />
           <Moon className="h-4.5 w-4.5 hidden dark:block" />
@@ -202,7 +202,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
         {/* User Menu Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-9 w-9 rounded-full border border-border/80">
+            <Button variant="ghost" className="relative h-9 w-9 rounded-full border border-border/45">
               <Avatar className="h-8 w-8">
                 <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">
                   {getInitials()}
@@ -210,7 +210,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 mt-1 border-border/80 bg-card/95 backdrop-blur-md shadow-lg" align="end" forceMount>
+          <DropdownMenuContent className="w-56 mt-1 border border-border/40 bg-card/75 backdrop-blur-xl shadow-xl" align="end" forceMount>
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-bold text-foreground">
@@ -219,7 +219,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
                 <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator className="bg-border/80" />
+            <DropdownMenuSeparator className="bg-border/60" />
             <DropdownMenuItem onClick={() => router.push("/profile")} className="cursor-pointer flex items-center gap-2">
               <UserCheck className="h-4 w-4" />
               <span>Profile Settings</span>
@@ -228,7 +228,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
               <GraduationCap className="h-4 w-4" />
               <span>Dashboard Hub</span>
             </DropdownMenuItem>
-            <DropdownMenuSeparator className="bg-border/80" />
+            <DropdownMenuSeparator className="bg-border/60" />
             <DropdownMenuItem
               onClick={handleLogout}
               disabled={isLoggingOut}

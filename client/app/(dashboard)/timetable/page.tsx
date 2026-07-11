@@ -81,7 +81,7 @@ export default function TimetablePage() {
   return (
     <div className="space-y-6 animate-in fade-in duration-500 pb-12">
       {/* Header bar */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-900 pb-5">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border/40 pb-5">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
             <Calendar className="h-6 w-6 text-indigo-400" /> Weekly Schedule
@@ -120,12 +120,12 @@ export default function TimetablePage() {
           <p className="text-xs text-slate-400 mt-3 font-medium">Loading weekly class schedules...</p>
         </div>
       ) : isError ? (
-        <div className="text-center p-12 bg-slate-900/10 border border-slate-850 rounded-xl my-6">
+        <div className="text-center p-12 bg-slate-900/10 border border-border/40 rounded-xl my-6">
           <p className="text-red-400 text-xs font-semibold">Failed to fetch scheduled timetable slots.</p>
           <Button
             size="sm"
             variant="outline"
-            className="mt-3 border-slate-800 text-white text-xs"
+            className="mt-3 border-border/50 text-white text-xs"
             onClick={() => refetch()}
           >
             Retry Connection

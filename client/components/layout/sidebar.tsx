@@ -16,6 +16,9 @@ import {
   CalendarDays,
   FileSpreadsheet,
   Clock,
+  Landmark,
+  CreditCard,
+  BookMarked,
   Settings,
   ChevronLeft,
   Megaphone,
@@ -34,7 +37,7 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
   const pathname = usePathname();
   const { user } = useSelector((state: RootState) => state.auth);
   
-  const role = user?.role?.name || "";
+  const role = user?.role?.name || "STUDENT";
 
   // Core navigation items with role-restrictions
   const navItems = [
@@ -45,12 +48,6 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       roles: ["ADMIN", "TEACHER", "STUDENT"]
     },
     {
-      name: "Users",
-      href: "/users",
-      icon: Users,
-      roles: ["ADMIN"]
-    },
-    {
       name: "Departments",
       href: "/departments",
       icon: Building2,
@@ -59,13 +56,13 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
     {
       name: "Courses",
       href: "/courses",
-      icon: BookOpen,
+      icon: GraduationCap,
       roles: ["ADMIN", "TEACHER", "STUDENT"]
     },
     {
       name: "Subjects",
       href: "/subjects",
-      icon: FolderKanban,
+      icon: BookOpen,
       roles: ["ADMIN", "TEACHER", "STUDENT"]
     },
     {
@@ -75,10 +72,16 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       roles: ["ADMIN", "TEACHER"]
     },
     {
-      name: "Student Directory",
+      name: "Student Profiles",
       href: "/students",
       icon: UserSquare2,
       roles: ["ADMIN", "TEACHER"]
+    },
+    {
+      name: "Users",
+      href: "/users",
+      icon: Users,
+      roles: ["ADMIN"]
     },
     {
       name: "Sections",
@@ -127,6 +130,60 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       href: "/semesters",
       icon: BookOpen,
       roles: ["ADMIN"]
+    },
+    {
+      name: "Student Promotion",
+      href: "/academic/promotion",
+      icon: GraduationCap,
+      roles: ["ADMIN"]
+    },
+    {
+      name: "Backlogs register",
+      href: "/academic/backlogs",
+      icon: BookMarked,
+      roles: ["ADMIN", "STUDENT"]
+    },
+    {
+      name: "Revaluation hub",
+      href: "/academic/revaluation",
+      icon: Award,
+      roles: ["ADMIN", "STUDENT"]
+    },
+    {
+      name: "Academic Calendar",
+      href: "/academic/calendar",
+      icon: CalendarDays,
+      roles: ["ADMIN", "TEACHER", "STUDENT"]
+    },
+    {
+      name: "Fees & ledgers",
+      href: "/finance/fees",
+      icon: Landmark,
+      roles: ["ADMIN", "STUDENT"]
+    },
+    {
+      name: "Scholarships",
+      href: "/finance/scholarships",
+      icon: Award,
+      roles: ["ADMIN"]
+    },
+    {
+      name: "Simulated checkout",
+      href: "/finance/payments",
+      icon: CreditCard,
+      roles: ["ADMIN", "STUDENT"]
+    },
+    {
+      name: "Books Inventory",
+      href: "/library/books",
+      icon: BookOpen,
+      roles: ["ADMIN", "TEACHER", "STUDENT"]
+    },
+    {
+      name: "Circulation logs",
+      href: "/library/borrow",
+      icon: FolderKanban,
+      roles: ["ADMIN", "STUDENT"]
     },
     {
       name: "Profile Settings",
@@ -189,17 +246,21 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-3.5 px-3 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all duration-200 group border
+                className={`relative flex items-center gap-3.5 px-3 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all duration-300 group border
                   ${
                     isActive
-                      ? "bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(99,102,241,0.06)]"
-                      : "text-muted-foreground hover:bg-muted/40 hover:text-foreground border-transparent"
+                      ? "bg-linear-to-r from-primary/10 to-primary/5 text-primary border-primary/20 shadow-[0_2px_12px_rgba(99,102,241,0.08)]"
+                      : "text-muted-foreground hover:bg-muted/30 hover:text-foreground border-transparent hover:translate-x-0.5"
                   }
                 `}
                 title={!isOpen ? item.name : undefined}
               >
+                {/* Active indicator bar */}
+                {isActive && (
+                  <span className="absolute left-0 top-3 bottom-3 w-1 rounded-r-full bg-primary" />
+                )}
                 <Icon
-                  className={`h-4.5 w-4.5 transition-transform duration-200 group-hover:scale-110
+                  className={`h-4.5 w-4.5 transition-all duration-300 group-hover:scale-110
                     ${isActive ? "text-primary" : "text-muted-foreground/80 group-hover:text-foreground"}
                   `}
                 />

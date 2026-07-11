@@ -160,4 +160,36 @@
   .neon-border-focus {
     @apply focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/20 transition-all duration-200;
   }
+
+  /* Custom Premium Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 9999px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--muted-foreground);
+  }
+
+  /* Premium Glass Cards grid styling */
+  .premium-grid-hover {
+    @apply transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.3)] hover:border-primary/20;
+  }
+
+  /* Subtle shimmer keyframe animation */
+  @keyframes subtle-shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .premium-shimmer {
+    background: linear-gradient(90deg, transparent, oklch(var(--border) / 10%), transparent);
+    background-size: 200% 100%;
+    animation: subtle-shimmer 2.5s infinite linear;
+  }
 }

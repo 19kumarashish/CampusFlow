@@ -149,9 +149,9 @@ export default function CourseDialog({
       />
 
       {/* Modal Card */}
-      <Card className="relative w-full max-w-lg border-slate-800 bg-slate-950 p-6 shadow-2xl animate-in zoom-in-95 duration-200 z-10 overflow-y-auto max-h-[90vh]">
+      <Card className="relative w-full max-w-lg border border-border/40 bg-card/90 backdrop-blur-xl p-6 shadow-2xl animate-in zoom-in-95 duration-200 z-10 overflow-y-auto max-h-[90vh]">
         {/* Header */}
-        <div className="flex justify-between items-center border-b border-slate-900 pb-4 mb-5">
+        <div className="flex justify-between items-center border-b border-border/40 pb-4 mb-5">
           <div className="flex items-center gap-2">
             {isEditMode ? (
               <Edit className="h-5 w-5 text-indigo-400" />
@@ -181,7 +181,7 @@ export default function CourseDialog({
             <Input
               id="name"
               placeholder="e.g. Bachelor of Technology in CSE"
-              className="border-slate-800 bg-slate-900/60 text-xs text-white"
+              className="border-border/50 bg-slate-900/40 text-xs text-white focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all duration-200"
               disabled={isPending}
               {...register("name")}
             />
@@ -199,7 +199,7 @@ export default function CourseDialog({
               <Input
                 id="code"
                 placeholder="e.g. CSE-BTECH"
-                className="border-slate-800 bg-slate-900/60 text-xs text-white"
+                className="border-border/50 bg-slate-900/40 text-xs text-white focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all duration-200"
                 disabled={isPending}
                 {...register("code")}
               />
@@ -215,7 +215,7 @@ export default function CourseDialog({
               </Label>
               <select
                 id="department"
-                className="h-9 w-full rounded-md border border-slate-800 bg-slate-900/60 px-3 py-1.5 text-xs text-slate-300 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="h-9 w-full rounded-md border border-border/50 bg-slate-900/40 px-3 py-1.5 text-xs text-slate-350 focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all duration-200"
                 disabled={isPending}
                 {...register("department")}
               >
@@ -239,7 +239,7 @@ export default function CourseDialog({
               </Label>
               <select
                 id="degree"
-                className="h-9 w-full rounded-md border border-slate-800 bg-slate-900/60 px-3 py-1.5 text-xs text-slate-300 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="h-9 w-full rounded-md border border-border/50 bg-slate-900/40 px-3 py-1.5 text-xs text-slate-350 focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all duration-200"
                 disabled={isPending}
                 {...register("degree")}
               >
@@ -269,7 +269,7 @@ export default function CourseDialog({
                 </Label>
                 <select
                   id="status"
-                  className="h-9 w-full rounded-md border border-slate-800 bg-slate-900/60 px-3 py-1.5 text-xs text-slate-300 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  className="h-9 w-full rounded-md border border-border/50 bg-slate-900/40 px-3 py-1.5 text-xs text-slate-350 focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all duration-200"
                   disabled={isPending}
                   {...register("status")}
                 >
@@ -290,7 +290,7 @@ export default function CourseDialog({
                 id="duration"
                 type="number"
                 placeholder="4"
-                className="border-slate-800 bg-slate-900/60 text-xs text-white"
+                className="border-border/50 bg-slate-900/40 text-xs text-white focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all duration-200"
                 disabled={isPending}
                 {...register("duration", { valueAsNumber: true })}
               />
@@ -308,7 +308,7 @@ export default function CourseDialog({
                 id="totalSemesters"
                 type="number"
                 placeholder="8"
-                className="border-slate-800 bg-slate-900/60 text-xs text-white"
+                className="border-border/50 bg-slate-900/40 text-xs text-white focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all duration-200"
                 disabled={isPending}
                 {...register("totalSemesters", { valueAsNumber: true })}
               />
@@ -319,11 +319,11 @@ export default function CourseDialog({
           </div>
 
           {/* Action buttons */}
-          <div className="mt-8 flex justify-end gap-3 border-t border-slate-900 pt-4">
+          <div className="mt-8 flex justify-end gap-3 border-t border-border/40 pt-4">
             <Button
               type="button"
               variant="outline"
-              className="border-slate-800 bg-slate-950 text-slate-400 hover:bg-slate-900 text-white text-xs h-9"
+              className="border-border/50 bg-slate-950 text-slate-450 hover:bg-slate-900 text-xs h-9"
               onClick={onClose}
               disabled={isPending}
             >

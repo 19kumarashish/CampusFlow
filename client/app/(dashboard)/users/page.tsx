@@ -82,7 +82,7 @@ export default function UsersPage() {
     <RoleGuard allowedRoles={["ADMIN"]}>
       <div className="space-y-6 animate-in fade-in duration-500 pb-12">
         {/* Title bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-900 pb-5">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border/40 pb-5">
           <div>
             <h1 className="text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
               <User className="h-6 w-6 text-indigo-400" /> User Accounts
@@ -118,12 +118,12 @@ export default function UsersPage() {
             <p className="text-xs text-slate-400 mt-3 font-medium">Fetching active workspace directory...</p>
           </div>
         ) : isError ? (
-          <div className="text-center p-12 bg-slate-900/10 border border-slate-850 rounded-xl my-6">
+          <div className="text-center p-12 bg-slate-900/10 border border-border/40 rounded-xl my-6">
             <p className="text-red-400 text-xs font-semibold">Failed to fetch users list.</p>
             <Button
               size="sm"
               variant="outline"
-              className="mt-3 border-slate-800 text-white text-xs"
+              className="mt-3 border-border/50 text-white text-xs"
               onClick={() => refetch()}
             >
               Retry Connection
@@ -135,7 +135,7 @@ export default function UsersPage() {
 
             {/* Pagination Controls */}
             {data?.pagination && data.pagination.totalPages > 1 && (
-              <div className="flex justify-between items-center bg-slate-950/20 px-4 py-3 border border-slate-900 rounded-lg">
+              <div className="flex justify-between items-center bg-slate-950/20 px-4 py-3 border border-border/40 rounded-lg">
                 <span className="text-[11px] text-slate-500 font-medium">
                   Showing page <strong className="text-slate-300">{data.pagination.page}</strong> of{" "}
                   <strong className="text-slate-300">{data.pagination.totalPages}</strong> (
@@ -146,7 +146,7 @@ export default function UsersPage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-8 border-slate-850 bg-slate-950 text-slate-300 text-xs hover:bg-slate-900"
+                    className="h-8 border-border/50 bg-slate-950 text-slate-300 text-xs hover:bg-slate-900"
                     disabled={!data.pagination.hasPreviousPage}
                     onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
                   >
@@ -155,7 +155,7 @@ export default function UsersPage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-8 border-slate-850 bg-slate-950 text-slate-300 text-xs hover:bg-slate-900"
+                    className="h-8 border-border/50 bg-slate-950 text-slate-300 text-xs hover:bg-slate-900"
                     disabled={!data.pagination.hasNextPage}
                     onClick={() => setPage((prev) => Math.min(prev + 1, data.pagination.totalPages))}
                   >

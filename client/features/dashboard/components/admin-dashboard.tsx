@@ -90,11 +90,11 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
           return (
             <Card
               key={idx}
-              className={`border-slate-800 bg-slate-950/40 p-6 backdrop-blur-xl transition-all duration-300 hover:border-slate-700 hover:translate-y-[-2px] ${item.border}`}
+              className={`border-border/40 bg-slate-950/30 p-6 backdrop-blur-xl transition-all duration-300 hover:border-primary/20 premium-grid-hover ${item.border}`}
             >
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
                     {item.title}
                   </p>
                   <h3 className="text-3xl font-extrabold tracking-tight mt-2 text-white">
@@ -105,7 +105,7 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
                   <Icon className="h-5 w-5" />
                 </div>
               </div>
-              <p className="text-xs text-slate-400 mt-3 flex items-center gap-1.5">
+              <p className="text-[11px] text-slate-450 mt-3 flex items-center gap-1.5 font-semibold">
                 <span className="h-1.5 w-1.5 rounded-full bg-slate-700" />
                 {item.desc}
               </p>
@@ -117,14 +117,14 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
       {/* Analytics Summary */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Attendance Rate */}
-        <Card className="border-slate-800 bg-slate-950/40 p-6 backdrop-blur-xl flex flex-col justify-between">
+        <Card className="border-border/40 bg-slate-950/30 p-6 backdrop-blur-xl flex flex-col justify-between hover:border-primary/10 premium-grid-hover">
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-300 border-b border-slate-900 pb-3 flex items-center gap-2">
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-350 border-b border-border/40 pb-3 flex items-center gap-2">
               <Percent className="h-4 w-4 text-indigo-400" /> Attendance Rate
             </h4>
             <div className="flex flex-col items-center py-6">
               {/* Circular Attendance Graphic */}
-              <div className="relative flex items-center justify-center h-32 w-32 rounded-full border-[10px] border-slate-850 shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]">
+              <div className="relative flex items-center justify-center h-32 w-32 rounded-full border-[10px] border-slate-900/60 shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]">
                 {/* Visual percentage ring styled in CSS */}
                 <div className="absolute inset-0 rounded-full border-[10px] border-indigo-500/20" />
                 <span className="text-3xl font-extrabold text-white">
@@ -139,9 +139,9 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
         </Card>
 
         {/* Academic Analytics */}
-        <Card className="border-slate-800 bg-slate-950/40 p-6 backdrop-blur-xl flex flex-col justify-between">
+        <Card className="border-border/40 bg-slate-950/30 p-6 backdrop-blur-xl flex flex-col justify-between hover:border-primary/10 premium-grid-hover">
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-300 border-b border-slate-900 pb-3 flex items-center gap-2">
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-350 border-b border-border/40 pb-3 flex items-center gap-2">
               <Award className="h-4 w-4 text-emerald-400" /> Academic Performance
             </h4>
             <div className="space-y-6 py-6">
@@ -150,7 +150,7 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
                   <span className="text-slate-400 font-medium">AVERAGE CGPA</span>
                   <span className="text-emerald-400 font-bold">{results.averageCGPA} / 10.0</span>
                 </div>
-                <div className="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-850">
+                <div className="w-full bg-slate-900/60 rounded-full h-2.5 overflow-hidden border border-border/40">
                   <div
                     className="bg-emerald-500 h-full rounded-full shadow-[0_0_8px_rgba(16,185,129,0.5)]"
                     style={{ width: `${(results.averageCGPA / 10) * 100}%` }}
@@ -163,7 +163,7 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
                   <span className="text-slate-400 font-medium">PASS RATE</span>
                   <span className="text-indigo-400 font-bold">{results.passRate}%</span>
                 </div>
-                <div className="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-850">
+                <div className="w-full bg-slate-900/60 rounded-full h-2.5 overflow-hidden border border-border/40">
                   <div
                     className="bg-indigo-500 h-full rounded-full shadow-[0_0_8px_rgba(99,102,241,0.5)]"
                     style={{ width: `${results.passRate}%` }}
@@ -175,22 +175,22 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
         </Card>
 
         {/* Top Performing Departments */}
-        <Card className="border-slate-800 bg-slate-950/40 p-6 backdrop-blur-xl flex flex-col justify-between">
+        <Card className="border-border/40 bg-slate-950/30 p-6 backdrop-blur-xl flex flex-col justify-between hover:border-primary/10 premium-grid-hover">
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-300 border-b border-slate-900 pb-3 flex items-center gap-2">
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-350 border-b border-border/40 pb-3 flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-amber-400" /> Top Departments
             </h4>
             <div className="divide-y divide-slate-900/60 mt-2">
               {departments.length ? (
                 departments.map((dept, idx) => (
                   <div key={idx} className="py-3 flex justify-between items-center text-xs">
-                    <span className="text-slate-300 font-medium flex items-center gap-2">
-                      <span className="flex h-5 w-5 items-center justify-center rounded bg-slate-900 text-[10px] text-slate-500 font-bold border border-slate-850">
+                    <span className="text-slate-350 font-medium flex items-center gap-2">
+                      <span className="flex h-5 w-5 items-center justify-center rounded bg-slate-900 text-[10px] text-slate-500 font-bold border border-border/40">
                         {idx + 1}
                       </span>
                       {dept._id || "General"}
                     </span>
-                    <span className="font-bold text-white bg-slate-900/80 px-2 py-0.5 rounded border border-slate-850">
+                    <span className="font-bold text-white bg-slate-900/80 px-2 py-0.5 rounded border border-border/40">
                       {dept.averageCGPA} GPA
                     </span>
                   </div>
@@ -206,11 +206,11 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
       {/* Admissions Chart & Recent Items */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Admissions Trend */}
-        <Card className="lg:col-span-1 border-slate-800 bg-slate-950/40 p-6 backdrop-blur-xl">
-          <h4 className="text-sm font-bold uppercase tracking-wider text-slate-300 border-b border-slate-900 pb-3 flex items-center gap-2">
+        <Card className="lg:col-span-1 border-border/40 bg-slate-950/30 p-6 backdrop-blur-xl hover:border-primary/10 premium-grid-hover">
+          <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-350 border-b border-border/40 pb-3 flex items-center gap-2">
             <Calendar className="h-4 w-4 text-indigo-400" /> Monthly Admissions
           </h4>
-          <div className="mt-6 flex h-48 items-end gap-3 px-2 border-b border-slate-900 pb-2">
+          <div className="mt-6 flex h-48 items-end gap-3 px-2 border-b border-border/40 pb-2">
             {admissions.length ? (
               admissions.map((item, idx) => {
                 const heightPercent = maxAdmissions
@@ -219,15 +219,15 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
                 return (
                   <div key={idx} className="flex-1 flex flex-col items-center group relative h-full justify-end">
                     {/* Tooltip */}
-                    <div className="absolute bottom-full mb-2 bg-slate-900 border border-slate-800 text-[10px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-white">
+                    <div className="absolute bottom-full mb-2 bg-slate-900 border border-border/40 text-[10px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacityReady whitespace-nowrap text-white">
                       {item.students} Students
                     </div>
                     {/* Bar */}
                     <div
-                      className="w-full bg-indigo-600/70 group-hover:bg-indigo-500 rounded-t-sm transition-all duration-350 shadow-[0_0_8px_rgba(99,102,241,0.2)]"
+                      className="w-full bg-indigo-600/60 group-hover:bg-indigo-500 rounded-t-sm transition-all duration-300 shadow-[0_0_8px_rgba(99,102,241,0.2)]"
                       style={{ height: `${Math.max(heightPercent, 5)}%` }}
                     />
-                    <span className="text-[10px] text-slate-500 mt-2 font-medium">
+                    <span className="text-[9px] text-slate-500 mt-2 font-bold">
                       {getMonthName(item._id.month)} '{String(item._id.year).slice(-2)}
                     </span>
                   </div>
@@ -242,21 +242,21 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
         </Card>
 
         {/* Recent Schedule Overview */}
-        <Card className="lg:col-span-2 border-slate-800 bg-slate-950/40 p-6 backdrop-blur-xl space-y-6">
+        <Card className="lg:col-span-2 border-border/40 bg-slate-950/30 p-6 backdrop-blur-xl space-y-6 hover:border-primary/10 premium-grid-hover">
           {/* Upcoming Examinations */}
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-300 border-b border-slate-900 pb-3 flex items-center gap-2">
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-350 border-b border-border/40 pb-3 flex items-center gap-2">
               <ClipboardList className="h-4 w-4 text-rose-400" /> Upcoming Examinations
             </h4>
-            <div className="mt-3 overflow-hidden rounded-lg border border-slate-900 bg-slate-950/50">
-              <div className="divide-y divide-slate-900">
+            <div className="mt-3 overflow-hidden rounded-lg border border-border/40 bg-slate-950/10">
+              <div className="divide-y divide-border/40">
                 {examinations.length ? (
                   examinations.map((exam) => (
                     <div key={exam._id} className="p-3.5 flex justify-between items-center text-xs hover:bg-slate-900/30 transition-colors">
                       <div className="space-y-1">
                         <p className="font-bold text-white text-sm">{exam.name}</p>
                         <p className="text-slate-400 flex items-center gap-2">
-                          <span className="px-1.5 py-0.5 bg-slate-900 rounded border border-slate-800 text-[10px] font-semibold text-slate-300 uppercase">
+                          <span className="px-1.5 py-0.5 bg-slate-900 rounded border border-border/40 text-[10px] font-semibold text-slate-300 uppercase">
                             {exam.subject?.code}
                           </span>
                           {exam.subject?.name}
@@ -270,7 +270,7 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
                             year: "numeric"
                           })}
                         </p>
-                        <p className="text-slate-500 text-[10px] flex items-center gap-1 justify-end uppercase">
+                        <p className="text-slate-500 text-[10px] flex items-center gap-1 justify-end uppercase font-bold">
                           <MapPin className="h-3 w-3" /> Section {exam.section?.name || "N/A"}
                         </p>
                       </div>
@@ -285,18 +285,18 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
 
           {/* Recent Assignments */}
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-300 border-b border-slate-900 pb-3 flex items-center gap-2">
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-350 border-b border-border/40 pb-3 flex items-center gap-2">
               <FileText className="h-4 w-4 text-amber-400" /> Recently Published Assignments
             </h4>
-            <div className="mt-3 overflow-hidden rounded-lg border border-slate-900 bg-slate-950/50">
-              <div className="divide-y divide-slate-900">
+            <div className="mt-3 overflow-hidden rounded-lg border border-border/40 bg-slate-950/10">
+              <div className="divide-y divide-border/40">
                 {assignments.length ? (
                   assignments.map((assignment) => (
                     <div key={assignment._id} className="p-3.5 flex justify-between items-center text-xs hover:bg-slate-900/30 transition-colors">
                       <div className="space-y-1">
                         <p className="font-bold text-white text-sm">{assignment.title}</p>
                         <p className="text-slate-400 flex items-center gap-2">
-                          <span className="px-1.5 py-0.5 bg-slate-900 rounded border border-slate-800 text-[10px] font-semibold text-slate-300 uppercase">
+                          <span className="px-1.5 py-0.5 bg-slate-900 rounded border border-border/40 text-[10px] font-semibold text-slate-300 uppercase">
                             {assignment.subject?.code}
                           </span>
                           {assignment.subject?.name}
@@ -310,7 +310,7 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
                             day: "numeric"
                           })}
                         </p>
-                        <p className="text-slate-500 text-[10px]">
+                        <p className="text-slate-550 text-[10px]">
                           Created: {new Date(assignment.createdAt).toLocaleDateString()}
                         </p>
                       </div>

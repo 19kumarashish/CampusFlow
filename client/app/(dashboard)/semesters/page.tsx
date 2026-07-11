@@ -62,7 +62,7 @@ export default function SemestersPage() {
   return (
     <div className="space-y-6 animate-in fade-in duration-500 pb-12">
       {/* Title bar */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-900 pb-5">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border/40 pb-5">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
             <Calendar className="h-6 w-6 text-indigo-400" /> Semesters Cycles
@@ -80,7 +80,7 @@ export default function SemestersPage() {
       </div>
 
       {/* Parameter Selection panel */}
-      <div className="flex flex-col sm:flex-row flex-wrap items-center gap-4 bg-slate-950/40 p-4 border border-slate-900 rounded-xl backdrop-blur-xl animate-in text-xs">
+      <div className="flex flex-col sm:flex-row flex-wrap items-center gap-4 bg-slate-950/30 p-4 border border-border/40 rounded-xl backdrop-blur-xl animate-in text-xs">
         {/* Search */}
         <div className="space-y-1 w-full sm:w-80 relative">
           <label className="text-[10px] font-bold text-slate-500 uppercase">Search by Name</label>
@@ -91,7 +91,7 @@ export default function SemestersPage() {
             <input
               type="text"
               placeholder="Filter semesters..."
-              className="h-9 w-full rounded-md border border-slate-800 bg-slate-900/40 pl-9 pr-3 py-1.5 text-slate-350 focus:border-indigo-500 focus:outline-none focus:ring-1"
+              className="h-9 w-full rounded-md border border-border/50 bg-slate-900/40 pl-9 pr-3 py-1.5 text-slate-350 focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all duration-200"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -100,38 +100,38 @@ export default function SemestersPage() {
 
         {/* Status Dropdown */}
         <div className="space-y-1 w-full sm:w-auto">
-          <label className="text-[10px] font-bold text-slate-500 uppercase font-bold">Status</label>
+          <label className="text-[10px] font-bold text-slate-500 uppercase">Status</label>
           <select
-            className="h-9 w-full rounded-md border border-slate-800 bg-slate-900/40 px-3 py-1.5 text-slate-300 focus:border-indigo-500 focus:outline-none focus:ring-1 sm:w-[130px]"
+            className="h-9 w-full rounded-md border border-border/50 bg-slate-900/40 px-3 py-1.5 text-slate-300 focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all duration-200 sm:w-[130px]"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as any)}
           >
             <option value="ALL" className="bg-slate-950 text-slate-300">All Statuses</option>
             <option value="ACTIVE" className="bg-slate-950 text-slate-300">Active</option>
-            <option value="INACTIVE" className="bg-slate-950 text-slate-300">Inactive</option>
+            <option value="INACTIVE" className="bg-slate-955 text-slate-300">Inactive</option>
           </select>
         </div>
       </div>
 
       {/* Main Logs Table */}
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center p-20 border border-slate-900 rounded-xl bg-slate-950/20">
+        <div className="flex flex-col items-center justify-center p-20 border border-border/40 rounded-xl bg-slate-950/20">
           <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
           <p className="text-xs text-slate-400 mt-3 font-semibold">Resolving semesters list...</p>
         </div>
       ) : isError ? (
-        <div className="text-center p-12 bg-slate-900/10 border border-slate-850 rounded-xl">
+        <div className="text-center p-12 bg-slate-900/10 border border-border/40 rounded-xl">
           <p className="text-red-400 text-xs font-semibold">Failed to resolve semesters list.</p>
-          <Button size="sm" variant="outline" className="mt-3 border-slate-800 text-white text-xs" onClick={() => refetch()}>
+          <Button size="sm" variant="outline" className="mt-3 border-border/50 text-white text-xs" onClick={() => refetch()}>
             Retry
           </Button>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-slate-900 bg-slate-950/40 backdrop-blur-xl">
+        <div className="overflow-hidden rounded-xl border border-border/40 bg-slate-950/30 backdrop-blur-xl">
           <div className="overflow-x-auto">
             <table className="w-full text-xs text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-900 bg-slate-900/30 text-slate-450 font-semibold uppercase tracking-wider text-[10px]">
+                <tr className="border-b border-border/40 bg-slate-900/30 text-slate-450 font-semibold uppercase tracking-wider text-[10px]">
                   <th className="p-4">Name / Academic Year</th>
                   <th className="p-4 text-center">Semester No.</th>
                   <th className="p-4 text-center">Type</th>
@@ -143,7 +143,7 @@ export default function SemestersPage() {
                   <th className="p-4 text-center">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-900/60 text-slate-300">
+              <tbody className="divide-y divide-border/40 text-slate-300">
                 {semestersList.length ? (
                   semestersList.map((sem) => (
                     <tr key={sem._id} className="hover:bg-slate-900/10 transition-colors">
@@ -205,7 +205,7 @@ export default function SemestersPage() {
                         <span className={`inline-flex px-2 py-0.5 rounded-full font-bold border text-[10px]
                           ${sem.status === "ACTIVE"
                             ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/20"
-                            : "bg-slate-900 text-slate-500 border-slate-800"
+                            : "bg-slate-900 text-slate-500 border-border/40"
                           }
                         `}>
                           {sem.status}
@@ -218,7 +218,7 @@ export default function SemestersPage() {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="h-8 w-8 p-0 border-slate-850 bg-slate-900/40 text-slate-400 hover:bg-slate-800 hover:text-indigo-400 transition-colors"
+                            className="h-8 w-8 p-0 border-border/50 bg-slate-900/40 text-slate-400 hover:bg-slate-800 hover:text-indigo-400 transition-all duration-200"
                             onClick={() => handleEdit(sem)}
                             disabled={isDeleting}
                           >
@@ -227,7 +227,7 @@ export default function SemestersPage() {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="h-8 w-8 p-0 border-slate-855 bg-slate-900/40 text-slate-400 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 transition-colors"
+                            className="h-8 w-8 p-0 border-border/50 bg-slate-900/40 text-slate-400 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 transition-all duration-200"
                             disabled={isDeleting}
                             onClick={() => handleDelete(sem._id, sem.name)}
                           >

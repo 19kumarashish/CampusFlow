@@ -189,9 +189,9 @@ export default function FacultyDialog({
       />
 
       {/* Modal Card */}
-      <Card className="relative w-full max-w-lg border-slate-800 bg-slate-950 p-6 shadow-2xl animate-in zoom-in-95 duration-200 z-10 overflow-y-auto max-h-[90vh]">
+      <Card className="relative w-full max-w-lg border border-border/40 bg-card/90 backdrop-blur-xl p-6 shadow-2xl animate-in zoom-in-95 duration-200 z-10 overflow-y-auto max-h-[90vh]">
         {/* Header */}
-        <div className="flex justify-between items-center border-b border-slate-900 pb-4 mb-5">
+        <div className="flex justify-between items-center border-b border-border/40 pb-4 mb-5">
           <div className="flex items-center gap-2">
             {isEditMode ? (
               <Edit className="h-5 w-5 text-indigo-400" />
@@ -426,11 +426,11 @@ export default function FacultyDialog({
           </div>
 
           {/* Action buttons */}
-          <div className="mt-8 flex justify-end gap-3 border-t border-slate-900 pt-4">
+          <div className="mt-8 flex justify-end gap-3 border-t border-border/40 pt-4">
             <Button
               type="button"
               variant="outline"
-              className="border-slate-800 bg-slate-950 text-slate-400 hover:bg-slate-900 text-white text-xs h-9"
+              className="border-border/50 bg-slate-955 text-slate-450 hover:bg-slate-900 text-xs h-9"
               onClick={onClose}
               disabled={isPending}
             >

@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CampusFlow Client 🎓
 
-## Getting Started
+Welcome to the frontend workspace of **CampusFlow**, a production-grade, premium University ERP System designed and built with a high-fidelity visual experience on par with Stripe, Vercel, and Linear dashboards.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🎨 Design Philosophy & Visual Identity
+CampusFlow moves away from traditional, crowded administrative database views to deliver an elegant, minimal, and modern workspace.
+- **Obsidian-glass Palette:** Curated dark mode colors using fine borders (`border-border/40`) and soft backdrop blurs (`backdrop-blur-xl bg-card/90`).
+- **Tactile Transitions:** Fluid cursor hover lifts, list indicators on active states, and custom glowing focus rings to create a high-quality interface.
+- **Dynamic Dashboard Layouts:** Rich metrics cards, upcoming exam schedules, calendar logs, and visual CGPA performance rings.
+
+---
+
+## 🏗️ Technical Stack & Architecture
+
+- **Core Framework:** Next.js (App Router, static compilation hooks)
+- **Styling:** Tailwind CSS + Vanilla CSS enhancements (Obsidian-glass systems, premium scrollbars, and shimmer gradients in `globals.css`)
+- **State Management:** Redux Toolkit (`@reduxjs/toolkit`) + React Hook Form
+- **Form Verification:** Zod Schema validation (`zod` + `@hookform/resolvers/zod`)
+- **API Engine:** Axios with dual-token JWT request interceptors (Access token automatic rotation on `401 Unauthorized`)
+
+---
+
+## 📁 Project Directory Structure
+CampusFlow utilizes a **Domain-Driven Design (DDD)** directory structure to ensure modularity and scalability:
+
+```text
+client/
+├── app/                  # Next.js App Router Page components
+│   ├── (auth)/           # Authentication layout and route
+│   └── (dashboard)/      # Protected administrative app screens
+├── features/             # Domain modules
+│   ├── auth/             # Login forms, hooks, token actions
+│   ├── semesters/        # Terms listing tables, modals, hooks
+│   ├── timetable/        # Class grids, slots schedules
+│   ├── students/         # Profile edit dialogs, metrics cards
+│   └── ...               # Additional feature domains
+├── lib/                  # Library configurations (Axios clients, interceptors)
+├── components/           # Reusable generic UI components (Buttons, Cards, Inputs)
+└── store/                # Redux global store configurations
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Local Installation & Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Prerequisites
+Make sure you have Node.js (version 18 or above) installed.
 
-## Learn More
+### 2. Configure Environment Variables
+Create a `.env.local` file in the root of the client folder:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Install Dependencies
+```bash
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Launch Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) to view your local workspace.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🌐 Production Deployment to Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+During Vercel build stages, Next.js bakes environment variables into static components. Configure them in Vercel settings as follows:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Go to **Vercel Dashboard** -> **Settings** -> **Environment Variables**.
+2. Add the variable:
+   - **Key**: `NEXT_PUBLIC_API_URL`
+   - **Value**: `https://<your-render-backend-url>/api/v1`
+3. Save the variable.
+4. Go to **Deployments** and click **Redeploy** to compile the latest values.
